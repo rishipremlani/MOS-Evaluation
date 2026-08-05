@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>MOS Evaluation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Mean Opinion Score Evaluation</h1>
+
+<p>
+
+Please fill in your information before beginning.
+
+</p>
+
+<form action="/register" method="POST">
+
+<label>Name (Optional)</label>
+
+<input type="text"
+       name="name">
+
+<label>Age</label>
+
+<input
+type="number"
+name="age"
+required>
+
+<label>Profession</label>
+
+<select name="profession">
+
+<option>Student</option>
+
+<option>Researcher</option>
+
+<option>Clinician</option>
+
+<option>Other</option>
+
+</select>
+
+<button type="submit">
+
+Start Evaluation
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

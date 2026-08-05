@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Evaluation</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>
+
+Image {{ image_no }} / 25
+
+</h2>
+
+<hr>
+
+<p>
+
+Progress:
+{{ image_no }}/25
+
+</p>
+
+<div class="reference">
+
+<h3>Reference Low Resolution Image</h3>
+
+<img src="{{ url_for('static', filename=lr_image) }}">
+
+</div>
+
+<hr>
+
+<h3>Rate the Images</h3>
+
+<div class="image-row">
+
+{% for method in methods %}
+
+<div class="image-box">
+
+    <h3>Image {{ ['A','B','C'][loop.index0] }}</h3>
+
+    <img
+    src="{{ url_for('static', filename=method[1]) }}"
+    class="sr-image">
+
+    <br><br>
+
+    <label><input type="radio" name="rate{{ loop.index0 }}" value="1"> 1</label>
+    <label><input type="radio" name="rate{{ loop.index0 }}" value="2"> 2</label>
+    <label><input type="radio" name="rate{{ loop.index0 }}" value="3"> 3</label>
+    <label><input type="radio" name="rate{{ loop.index0 }}" value="4"> 4</label>
+    <label><input type="radio" name="rate{{ loop.index0 }}" value="5"> 5</label>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<br><br>
+
+<center>
+
+<button
+id="nextBtn"
+onclick="submitRating()">
+
+Next →
+
+</button>
+
+</center>
+
+<script>
+
+function submitRating() {
+
+    let ratings = {};
+    const letters = ["A", "B", "C"];
+
+    for (let i = 0; i < 3; i++) {
+
+        let selected = document.querySelector(
+            'input[name="rate' + i + '"]:checked'
+        );
+
+        if (!selected) {
+            alert("Please rate all three images.");
+            return;
+        }
+
+        ratings[letters[i]] = parseInt(selected.value);
+    }
+
+    document.getElementById("nextBtn").disabled = true;
+
+    fetch("/save_rating", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            image: {{ image_no }},
+            ratings: ratings
+        })
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        if (data.status === "success" || data.status === "already_saved") {
+
+            window.location.href = "/next_image";
+
+        } else {
+
+            alert("Unable to save rating.");
+            document.getElementById("nextBtn").disabled = false;
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+        alert("Server error. Please try again.");
+        document.getElementById("nextBtn").disabled = false;
+
+    });
+
+}
+
+</script>
+</body>
+
+</html>
