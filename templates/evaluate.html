@@ -9,6 +9,254 @@
 <link rel="stylesheet"
 href="{{ url_for('static', filename='css/style.css') }}">
 
+<style>
+
+/* =========================================
+   LR REFERENCE
+   ========================================= */
+
+.reference {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.reference img {
+    width: 220px;
+    height: 220px;
+
+    object-fit: contain;
+
+    display: block;
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   SR GRID
+   ========================================= */
+
+.image-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    column-gap: 70px;
+    row-gap: 25px;
+
+    width: 100%;
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    align-items: start;
+}
+
+
+/* =========================================
+   EACH SR PANEL
+   ========================================= */
+
+.image-box {
+    text-align: center;
+
+    margin: 0;
+    padding: 0;
+
+    min-width: 0;
+}
+
+
+/* =========================================
+   SR TITLE
+   ========================================= */
+
+.image-box h3 {
+    margin: 0 0 10px 0;
+}
+
+
+/* =========================================
+   SR IMAGE
+   ========================================= */
+
+.sr-image {
+
+    /* THIS is the important part */
+    width: 640px;
+    min-width: 640px;
+
+    height: 640px;
+    min-height: 640px;
+
+    max-width: none;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   RATINGS
+   ========================================= */
+
+.rating {
+
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 8px;
+
+    white-space: nowrap;
+
+    font-size: 17px;
+
+}
+
+
+/* =========================================
+   RADIO LABEL
+   ========================================= */
+
+.rating label {
+
+    display: inline-flex;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    gap: 3px;
+
+    margin: 0;
+
+    padding: 0;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================
+   RADIO BUTTON
+   ========================================= */
+
+.rating input {
+
+    margin: 0;
+
+}
+
+
+/* =========================================
+   SEPARATOR
+   ========================================= */
+
+hr {
+    margin: 15px 0;
+}
+
+
+/* =========================================
+   RATE TITLE
+   ========================================= */
+
+.image-grid + br + br {
+    display: none;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1450px) {
+
+    .image-grid {
+        column-gap: 30px;
+    }
+
+    .sr-image {
+        width: 600px;
+        min-width: 600px;
+
+        height: 600px;
+        min-height: 600px;
+    }
+
+}
+
+
+@media (max-width: 1250px) {
+
+    .image-grid {
+        grid-template-columns: 1fr;
+        row-gap: 40px;
+    }
+
+    .sr-image {
+        width: 640px;
+        min-width: 640px;
+
+        height: 640px;
+        min-height: 640px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .reference img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .image-grid {
+
+        display: grid;
+
+        grid-template-columns: 640px 640px;
+
+        column-gap: 60px;
+
+        row-gap: 25px;
+
+        width: 1340px;
+
+        margin: 0 auto;
+
+    }
+
+    .sr-image {
+        width: 640px;
+
+        height: 640px;
+
+        object-fit: contain;
+
+        display: block;
+        }
+
+    .rating {
+        gap: 8px;
+        font-size: 16px;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
@@ -16,51 +264,99 @@ href="{{ url_for('static', filename='css/style.css') }}">
 <div class="container">
 
 <h2>
-
 Image {{ image_no }} / 25
-
 </h2>
 
 <hr>
 
 <p>
-
-Progress:
-{{ image_no }}/25
-
+Progress: {{ image_no }}/25
 </p>
+
+
+<!-- ===================================================== -->
+<!-- LOW RESOLUTION REFERENCE -->
+<!-- ===================================================== -->
 
 <div class="reference">
 
 <h3>Reference Low Resolution Image</h3>
 
-<img src="{{ url_for('static', filename=lr_image) }}">
+<img
+src="{{ url_for('static', filename=lr_image) }}"
+alt="Low Resolution Reference">
 
 </div>
 
+
 <hr>
+
 
 <h3>Rate the Images</h3>
 
-<div class="image-row">
+
+<!-- ===================================================== -->
+<!-- FOUR SR IMAGES -->
+<!-- ===================================================== -->
+
+<div class="image-grid">
 
 {% for method in methods %}
 
 <div class="image-box">
 
-    <h3>Image {{ ['A','B','C'][loop.index0] }}</h3>
+    <h3>
+        Image {{ ['A','B','C','D'][loop.index0] }}
+    </h3>
 
     <img
-    src="{{ url_for('static', filename=method[1]) }}"
-    class="sr-image">
+        src="{{ url_for('static', filename=method[1]) }}"
+        class="sr-image"
+        alt="Super Resolution Image">
 
-    <br><br>
+    <div class="rating">
 
-    <label><input type="radio" name="rate{{ loop.index0 }}" value="1"> 1</label>
-    <label><input type="radio" name="rate{{ loop.index0 }}" value="2"> 2</label>
-    <label><input type="radio" name="rate{{ loop.index0 }}" value="3"> 3</label>
-    <label><input type="radio" name="rate{{ loop.index0 }}" value="4"> 4</label>
-    <label><input type="radio" name="rate{{ loop.index0 }}" value="5"> 5</label>
+        <label>
+            <input
+                type="radio"
+                name="rate{{ loop.index0 }}"
+                value="1">
+            1
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="rate{{ loop.index0 }}"
+                value="2">
+            2
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="rate{{ loop.index0 }}"
+                value="3">
+            3
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="rate{{ loop.index0 }}"
+                value="4">
+            4
+        </label>
+
+        <label>
+            <input
+                type="radio"
+                name="rate{{ loop.index0 }}"
+                value="5">
+            5
+        </label>
+
+    </div>
 
 </div>
 
@@ -68,7 +364,10 @@ Progress:
 
 </div>
 
-<br><br>
+
+<br>
+<br>
+
 
 <center>
 
@@ -82,68 +381,109 @@ Next →
 
 </center>
 
+
 <script>
 
 function submitRating() {
 
     let ratings = {};
-    const letters = ["A", "B", "C"];
 
-    for (let i = 0; i < 3; i++) {
+    const letters = ["A", "B", "C", "D"];
+
+
+    for (let i = 0; i < 4; i++) {
 
         let selected = document.querySelector(
             'input[name="rate' + i + '"]:checked'
         );
 
+
         if (!selected) {
-            alert("Please rate all three images.");
+
+            alert("Please rate all four images.");
+
             return;
+
         }
 
-        ratings[letters[i]] = parseInt(selected.value);
+
+        ratings[letters[i]] =
+            parseInt(selected.value);
+
     }
+
 
     document.getElementById("nextBtn").disabled = true;
 
+
     fetch("/save_rating", {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
+
             image: {{ image_no }},
+
             ratings: ratings
+
         })
+
     })
+
 
     .then(response => response.json())
 
+
     .then(data => {
 
-        if (data.status === "success" || data.status === "already_saved") {
+
+        if (
+            data.status === "success" ||
+            data.status === "already_saved"
+        ) {
 
             window.location.href = "/next_image";
 
-        } else {
+        }
+
+        else {
 
             alert("Unable to save rating.");
-            document.getElementById("nextBtn").disabled = false;
+
+            document.getElementById(
+                "nextBtn"
+            ).disabled = false;
 
         }
 
     })
+
 
     .catch(error => {
 
         console.error(error);
-        alert("Server error. Please try again.");
-        document.getElementById("nextBtn").disabled = false;
+
+        alert(
+            "Server error. Please try again."
+        );
+
+        document.getElementById(
+            "nextBtn"
+        ).disabled = false;
 
     });
 
 }
 
 </script>
+
+
+</div>
+
 </body>
 
 </html>

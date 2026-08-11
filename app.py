@@ -51,16 +51,18 @@ def evaluate():
 
     if "participant_id" not in session:
         return redirect(url_for("home"))
+
     image_no = session.get("current_image", 1)
 
-    # All available methods
+    # Four available methods
     methods = [
         ("Ours", f"images/img{image_no:02d}/ours.png"),
         ("MDASR", f"images/img{image_no:02d}/mdasr.png"),
-        ("UnCapSTSR", f"images/img{image_no:02d}/uncapstsr.png")
+        ("UnCapSTSR", f"images/img{image_no:02d}/uncapstsr.png"),
+        ("TUDASR", f"images/img{image_no:02d}/tudasr.png")
     ]
 
-    # Create dictionary in session if not present
+    # Create image mappings dictionary if it doesn't exist
     if "image_mappings" not in session:
         session["image_mappings"] = {}
 
@@ -68,8 +70,10 @@ def evaluate():
 
     image_key = str(image_no)
 
-    # First visit to this image
-    if image_key not in mappings:
+    # Create a new random order if:
+    # 1. this image has never been visited, OR
+    # 2. an old 3-model mapping exists
+    if image_key not in mappings or len(mappings[image_key]) != 4:
 
         shuffled = methods.copy()
         random.shuffle(shuffled)
@@ -77,25 +81,35 @@ def evaluate():
         mappings[image_key] = [
             shuffled[0][0],
             shuffled[1][0],
-            shuffled[2][0]
+            shuffled[2][0],
+            shuffled[3][0]
         ]
 
         session["image_mappings"] = mappings
 
-    # Read stored order
+    # Read stored random order
     stored_order = mappings[image_key]
 
     ordered_methods = []
 
     for method_name in stored_order:
-        for m in methods:
-            if m[0] == method_name:
-                ordered_methods.append(m)
 
+        for method in methods:
+
+            if method[0] == method_name:
+                ordered_methods.append(method)
+                break
+
+    # Safety check
+    if len(ordered_methods) != 4:
+        return "Error: Could not construct all four image methods.", 500
+
+    # Store A/B/C/D mapping
     session["current_mapping"] = {
         "A": ordered_methods[0][0],
         "B": ordered_methods[1][0],
-        "C": ordered_methods[2][0]
+        "C": ordered_methods[2][0],
+        "D": ordered_methods[3][0]
     }
 
     lr_image = f"images/img{image_no:02d}/lr.png"
@@ -130,7 +144,7 @@ def save_rating():
     mapping = session["current_mapping"]
     ratings = data["ratings"]
 
-    for letter in ["A", "B", "C"]:
+    for letter in ["A", "B", "C" , "D"]:
 
         rating = Rating(
             participant_id=participant,
@@ -214,6 +228,5 @@ if __name__ == "__main__":
 
     app.run(
         host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000))
+        port=int(os.environ.get("PORT", 5001))
     )
-
