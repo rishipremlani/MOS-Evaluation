@@ -279,6 +279,18 @@ def export():
         }
     )
 
+@app.route("/reset_database")
+def reset_database():
+
+    # DELETE ALL RATINGS
+    Rating.query.delete()
+
+    # DELETE ALL PARTICIPANTS
+    Participant.query.delete()
+
+    db.session.commit()
+
+    return "DATABASE RESET SUCCESSFULLY"
 
 class Echo:
     def write(self, value):
