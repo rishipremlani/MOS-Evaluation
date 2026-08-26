@@ -11,9 +11,19 @@ href="{{ url_for('static', filename='css/style.css') }}">
 
 <style>
 
-/* =========================================
+/* ================================
+   PAGE
+   ================================ */
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* ================================
    LR REFERENCE
-   ========================================= */
+   ================================ */
 
 .reference {
     text-align: center;
@@ -23,234 +33,419 @@ href="{{ url_for('static', filename='css/style.css') }}">
 .reference img {
     width: 220px;
     height: 220px;
-
     object-fit: contain;
-
     display: block;
     margin: 0 auto;
 }
 
 
-/* =========================================
-   SR GRID
-   ========================================= */
+/* ================================
+   COMPARISON AREA
+   ================================ */
 
-.image-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    column-gap: 70px;
-    row-gap: 25px;
-
-    width: 100%;
-
-    max-width: 1400px;
-
-    margin: 0 auto;
-
-    align-items: start;
-}
-
-
-/* =========================================
-   EACH SR PANEL
-   ========================================= */
-
-.image-box {
-    text-align: center;
-
-    margin: 0;
-    padding: 0;
-
-    min-width: 0;
-}
-
-
-/* =========================================
-   SR TITLE
-   ========================================= */
-
-.image-box h3 {
-    margin: 0 0 10px 0;
-}
-
-
-/* =========================================
-   SR IMAGE
-   ========================================= */
-
-.sr-image {
-
-    /* THIS is the important part */
-    width: 640px;
-    min-width: 640px;
-
-    height: 640px;
-    min-height: 640px;
-
-    max-width: none;
-
-    object-fit: contain;
-
-    display: block;
-
-    margin: 0 auto;
-}
-
-
-/* =========================================
-   RATINGS
-   ========================================= */
-
-.rating {
-
+.comparison-section {
     display: flex;
-
-    flex-direction: row;
-
-    justify-content: center;
-
+    flex-direction: column;
     align-items: center;
+    margin-top: 20px;
+}
 
-    gap: 14px;
 
-    margin-top: 8px;
+/* ================================
+   METHOD BUTTONS
+   ================================ */
 
-    white-space: nowrap;
+.method-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.method-btn {
+    width: 58px;
+    height: 42px;
+
+    border: 1px solid #bbb;
+    border-radius: 8px;
+
+    background: #f4f4f4;
 
     font-size: 17px;
+    font-weight: 600;
 
+    cursor: pointer;
+}
+
+.method-btn:hover {
+    background: #e8e8e8;
+}
+
+.method-btn.active {
+    background: #333;
+    color: white;
+    border-color: #333;
 }
 
 
-/* =========================================
-   RADIO LABEL
-   ========================================= */
+/* ================================
+   TOOLBAR
+   ================================ */
 
-.rating label {
-
-    display: inline-flex;
-
-    flex-direction: row;
-
+.toolbar {
+    display: flex;
+    justify-content: center;
     align-items: center;
 
-    gap: 3px;
+    gap: 8px;
 
-    margin: 0;
+    margin-bottom: 12px;
+}
 
-    padding: 0;
+.tool-btn {
+    border: 1px solid #bbb;
+    border-radius: 7px;
 
-    white-space: nowrap;
+    background: white;
 
+    padding: 7px 13px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.tool-btn:hover {
+    background: #f1f1f1;
+}
+
+.tool-btn.active {
+    background: #333;
+    color: white;
 }
 
 
-/* =========================================
-   RADIO BUTTON
-   ========================================= */
+/* ================================
+   VIEWPORT
+   ================================ */
 
-.rating input {
+.comparison-viewport {
 
-    margin: 0;
+    position: relative;
 
+    width: 640px;
+    height: 640px;
+
+    overflow: hidden;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.15);
+
+    cursor: default;
+
+    user-select: none;
+
+    touch-action: none;
 }
 
 
-/* =========================================
-   SEPARATOR
-   ========================================= */
+/* ================================
+   IMAGE LAYERS
+   ================================ */
 
-hr {
-    margin: 15px 0;
+.image-layer {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    transform-origin: center center;
+
+    pointer-events: none;
+}
+
+.image-layer img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
 }
 
 
-/* =========================================
-   RATE TITLE
-   ========================================= */
+/* ================================
+   SLIDER COMPARISON
+   ================================ */
 
-.image-grid + br + br {
+.slider-container {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.slider-container .image-layer {
+
+    position: absolute;
+}
+
+
+.slider-divider {
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    width: 4px;
+
+    background: white;
+
+    box-shadow:
+        0 0 6px rgba(0,0,0,0.4);
+
+    cursor: ew-resize;
+
+    z-index: 20;
+
     display: none;
 }
 
+.slider-handle {
 
-/* =========================================
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    border: 2px solid #333;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    color: #333;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.3);
+}
+
+
+/* ================================
+   COMPARISON LABEL
+   ================================ */
+
+.comparison-label {
+
+    min-height: 22px;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+
+    color: #666;
+
+    text-align: center;
+}
+
+
+/* ================================
+   ZOOM INFORMATION
+   ================================ */
+
+.zoom-info {
+
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #777;
+
+    margin-top: 7px;
+}
+
+
+/* ================================
+   RATING UI
+   ================================ */
+
+.rating-section {
+
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+.rating-title {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+.rating-buttons {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+}
+
+.rating-btn {
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    border: 2px solid #bbb;
+
+    background: white;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+.rating-btn:hover {
+
+    background: #f0f0f0;
+}
+
+.rating-btn.selected {
+
+    background: #333;
+
+    color: white;
+
+    border-color: #333;
+
+    transform: scale(1.08);
+}
+
+
+/* ================================
+   RATING STATUS
+   ================================ */
+
+.rating-status {
+
+    margin-top: 12px;
+
+    font-size: 14px;
+
+    color: #777;
+}
+
+
+/* ================================
+   NEXT BUTTON
+   ================================ */
+
+#nextBtn {
+
+    margin-top: 22px;
+
+    padding: 12px 35px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #333;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+#nextBtn:disabled {
+
+    background: #aaa;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================
    RESPONSIVE
-   ========================================= */
-
-@media (max-width: 1450px) {
-
-    .image-grid {
-        column-gap: 30px;
-    }
-
-    .sr-image {
-        width: 600px;
-        min-width: 600px;
-
-        height: 600px;
-        min-height: 600px;
-    }
-
-}
-
-
-@media (max-width: 1250px) {
-
-    .image-grid {
-        grid-template-columns: 1fr;
-        row-gap: 40px;
-    }
-
-    .sr-image {
-        width: 640px;
-        min-width: 640px;
-
-        height: 640px;
-        min-height: 640px;
-    }
-
-}
-
+   ================================ */
 
 @media (max-width: 700px) {
 
+    .comparison-viewport {
+
+        width: 95vw;
+        height: 95vw;
+
+        max-width: 640px;
+        max-height: 640px;
+    }
+
     .reference img {
-        width: 200px;
-        height: 200px;
+
+        width: 180px;
+        height: 180px;
     }
 
-    .image-grid {
+    .rating-buttons {
 
-        display: grid;
-
-        grid-template-columns: 640px 640px;
-
-        column-gap: 60px;
-
-        row-gap: 25px;
-
-        width: 1340px;
-
-        margin: 0 auto;
-
-    }
-
-    .sr-image {
-        width: 640px;
-
-        height: 640px;
-
-        object-fit: contain;
-
-        display: block;
-        }
-
-    .rating {
         gap: 8px;
-        font-size: 16px;
+    }
+
+    .rating-btn {
+
+        width: 46px;
+        height: 46px;
+
+        font-size: 18px;
     }
 
 }
@@ -296,71 +491,219 @@ alt="Low Resolution Reference">
 
 
 <!-- ===================================================== -->
-<!-- FOUR SR IMAGES -->
+<!-- SR COMPARISON INTERFACE -->
 <!-- ===================================================== -->
 
-<div class="image-grid">
+<div class="comparison-section">
 
-{% for method in methods %}
+    <!-- A / B / C / D method selector -->
+    <div class="method-buttons">
 
-<div class="image-box">
+        <button
+            type="button"
+            class="method-btn active"
+            data-method="0"
+            onclick="selectMethod(0)">
+            A
+        </button>
 
-    <h3>
-        Image {{ ['A','B','C','D'][loop.index0] }}
-    </h3>
+        <button
+            type="button"
+            class="method-btn"
+            data-method="1"
+            onclick="selectMethod(1)">
+            B
+        </button>
 
-    <img
-        src="{{ url_for('static', filename=method[1]) }}"
-        class="sr-image"
-        alt="Super Resolution Image">
+        <button
+            type="button"
+            class="method-btn"
+            data-method="2"
+            onclick="selectMethod(2)">
+            C
+        </button>
 
-    <div class="rating">
-
-        <label>
-            <input
-                type="radio"
-                name="rate{{ loop.index0 }}"
-                value="1">
-            1
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="rate{{ loop.index0 }}"
-                value="2">
-            2
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="rate{{ loop.index0 }}"
-                value="3">
-            3
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="rate{{ loop.index0 }}"
-                value="4">
-            4
-        </label>
-
-        <label>
-            <input
-                type="radio"
-                name="rate{{ loop.index0 }}"
-                value="5">
-            5
-        </label>
+        <button
+            type="button"
+            class="method-btn"
+            data-method="3"
+            onclick="selectMethod(3)">
+            D
+        </button>
 
     </div>
 
-</div>
 
-{% endfor %}
+    <!-- Comparison label -->
+    <div
+        id="comparisonLabel"
+        class="comparison-label">
+    </div>
+
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+
+        <button
+            type="button"
+            class="tool-btn"
+            onclick="zoomOut()">
+            −
+        </button>
+
+        <button
+            type="button"
+            class="tool-btn"
+            onclick="resetView()">
+            Reset
+        </button>
+
+        <button
+            type="button"
+            class="tool-btn"
+            onclick="zoomIn()">
+            +
+        </button>
+
+        <button
+            type="button"
+            id="sliderBtn"
+            class="tool-btn"
+            onclick="toggleSlider()">
+            Compare
+        </button>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- IMAGE VIEWPORT -->
+    <!-- ================================================= -->
+
+    <div
+        id="comparisonViewport"
+        class="comparison-viewport">
+
+
+        <!-- Main/current image -->
+
+        <div
+            id="mainLayer"
+            class="image-layer">
+
+            <img
+                id="mainImage"
+                src="{{ url_for('static', filename=methods[0][1]) }}"
+                alt="Super Resolution Image">
+
+        </div>
+
+
+        <!-- Slider comparison image -->
+
+        <div
+            id="sliderContainer"
+            class="slider-container">
+
+            <div
+                id="comparisonLayer"
+                class="image-layer">
+
+                <img
+                    id="comparisonImage"
+                    src="{{ url_for('static', filename=methods[3][1]) }}"
+                    alt="Comparison Image">
+
+            </div>
+
+        </div>
+
+
+        <!-- Slider divider -->
+
+        <div
+            id="sliderDivider"
+            class="slider-divider">
+
+            <div class="slider-handle">
+                ↔
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="zoomInfo"
+        class="zoom-info">
+        Zoom: 100%
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RATING -->
+    <!-- ================================================= -->
+
+    <div class="rating-section">
+
+        <div class="rating-title">
+            Rate Image <span id="currentLetter">A</span>
+        </div>
+
+
+        <div class="rating-buttons">
+
+            <button
+                type="button"
+                class="rating-btn"
+                data-score="1"
+                onclick="setRating(1)">
+                1
+            </button>
+
+            <button
+                type="button"
+                class="rating-btn"
+                data-score="2"
+                onclick="setRating(2)">
+                2
+            </button>
+
+            <button
+                type="button"
+                class="rating-btn"
+                data-score="3"
+                onclick="setRating(3)">
+                3
+            </button>
+
+            <button
+                type="button"
+                class="rating-btn"
+                data-score="4"
+                onclick="setRating(4)">
+                4
+            </button>
+
+            <button
+                type="button"
+                class="rating-btn"
+                data-score="5"
+                onclick="setRating(5)">
+                5
+            </button>
+
+        </div>
+
+
+        <div
+            id="ratingStatus"
+            class="rating-status">
+            Please rate this image.
+        </div>
+
+    </div>
 
 </div>
 
@@ -372,115 +715,940 @@ alt="Low Resolution Reference">
 <center>
 
 <button
-id="nextBtn"
-onclick="submitRating()">
+    id="nextBtn"
+    onclick="submitRating()"
+    disabled>
 
-Next →
+    Next →
 
 </button>
 
 </center>
 
-
 <script>
 
-function submitRating() {
+/* =========================================================
+   MOS COMPARISON JAVASCRIPT
+   ========================================================= */
 
-    let ratings = {};
+/*
+    A = methods[0]
+    B = methods[1]
+    C = methods[2]
+    D = methods[3]
+*/
 
-    const letters = ["A", "B", "C", "D"];
+const letters = ["A", "B", "C", "D"];
 
 
-    for (let i = 0; i < 4; i++) {
+/* ---------------------------------------------------------
+   IMAGE PATHS FROM FLASK
+   --------------------------------------------------------- */
 
-        let selected = document.querySelector(
-            'input[name="rate' + i + '"]:checked'
+const methodPaths = [
+    {% for method in methods %}
+        "{{ url_for('static', filename=method[1]) }}"{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+
+
+/* ---------------------------------------------------------
+   STATE
+   --------------------------------------------------------- */
+
+let currentMethod = 0;
+
+let comparisonMethod = 1;
+
+let zoom = 1;
+
+let panX = 0;
+let panY = 0;
+
+let sliderEnabled = false;
+
+let sliderPosition = 50;
+
+let isPanning = false;
+
+
+/*
+    Store rating for each image independently.
+
+    Example:
+
+    A = 4
+    B = 3
+    C = 5
+    D = 4
+*/
+
+let ratings = {
+
+    A: null,
+    B: null,
+    C: null,
+    D: null
+
+};
+
+
+/* ---------------------------------------------------------
+   ELEMENTS
+   --------------------------------------------------------- */
+
+const viewport =
+    document.getElementById("comparisonViewport");
+
+const mainLayer =
+    document.getElementById("mainLayer");
+
+const comparisonLayer =
+    document.getElementById("comparisonLayer");
+
+const mainImage =
+    document.getElementById("mainImage");
+
+const comparisonImage =
+    document.getElementById("comparisonImage");
+
+const sliderContainer =
+    document.getElementById("sliderContainer");
+
+const sliderDivider =
+    document.getElementById("sliderDivider");
+
+const sliderBtn =
+    document.getElementById("sliderBtn");
+
+const zoomInfo =
+    document.getElementById("zoomInfo");
+
+const comparisonLabel =
+    document.getElementById("comparisonLabel");
+
+const currentLetter =
+    document.getElementById("currentLetter");
+
+const ratingStatus =
+    document.getElementById("ratingStatus");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+
+/* =========================================================
+   METHOD SELECTION
+   ========================================================= */
+
+function selectMethod(index) {
+
+    currentMethod = index;
+
+    /*
+        Compare current image against the next image.
+
+        A -> B
+        B -> C
+        C -> D
+        D -> A
+    */
+
+    comparisonMethod =
+        (currentMethod + 1) % methodPaths.length;
+
+
+    /*
+        Change main image.
+    */
+
+    mainImage.src =
+        methodPaths[currentMethod];
+
+
+    /*
+        Change comparison image.
+    */
+
+    comparisonImage.src =
+        methodPaths[comparisonMethod];
+
+
+    /*
+        Highlight selected A/B/C/D button.
+    */
+
+    document
+        .querySelectorAll(".method-btn")
+        .forEach(function(button, i) {
+
+            button.classList.toggle(
+                "active",
+                i === currentMethod
+            );
+
+        });
+
+
+    /*
+        Update rating heading.
+    */
+
+    currentLetter.textContent =
+        letters[currentMethod];
+
+
+    /*
+        Update comparison text.
+    */
+
+    updateComparisonLabel();
+
+
+    /*
+        Restore rating for this method.
+    */
+
+    updateRatingButtons();
+
+
+    /*
+        Start each selected method from
+        the same clean view.
+    */
+
+    resetView();
+
+}
+
+
+/* =========================================================
+   COMPARISON LABEL
+   ========================================================= */
+
+function updateComparisonLabel() {
+
+    if (sliderEnabled) {
+
+        comparisonLabel.textContent =
+            "Comparing Image " +
+            letters[currentMethod] +
+            " with Image " +
+            letters[comparisonMethod];
+
+    }
+
+    else {
+
+        comparisonLabel.textContent =
+            "Viewing Image " +
+            letters[currentMethod];
+
+    }
+
+}
+
+
+/* =========================================================
+   ZOOM
+   ========================================================= */
+
+function applyTransform() {
+
+    /*
+        IMPORTANT:
+
+        The EXACT same transform is applied
+        to BOTH images.
+
+        Therefore zoom and pan stay synchronized.
+    */
+
+    const transform =
+        "translate(" +
+        panX +
+        "px, " +
+        panY +
+        "px) " +
+        "scale(" +
+        zoom +
+        ")";
+
+
+    mainLayer.style.transform =
+        transform;
+
+
+    comparisonLayer.style.transform =
+        transform;
+
+
+    zoomInfo.textContent =
+        "Zoom: " +
+        Math.round(zoom * 100) +
+        "%";
+
+}
+
+
+/* ---------------------------------------------------------
+   ZOOM IN
+   --------------------------------------------------------- */
+
+function zoomIn() {
+
+    zoom =
+        Math.min(
+            10,
+            zoom + 0.25
+        );
+
+    applyTransform();
+
+}
+
+
+/* ---------------------------------------------------------
+   ZOOM OUT
+   --------------------------------------------------------- */
+
+function zoomOut() {
+
+    zoom =
+        Math.max(
+            1,
+            zoom - 0.25
         );
 
 
-        if (!selected) {
+    if (zoom === 1) {
 
-            alert("Please rate all four images.");
+        panX = 0;
+        panY = 0;
+
+    }
+
+
+    applyTransform();
+
+}
+
+
+/* ---------------------------------------------------------
+   RESET
+   --------------------------------------------------------- */
+
+function resetView() {
+
+    zoom = 1;
+
+    panX = 0;
+    panY = 0;
+
+    sliderPosition = 50;
+
+    applyTransform();
+
+    if (sliderEnabled) {
+
+        updateSliderPosition();
+
+    }
+
+}
+
+
+/* =========================================================
+   MOUSE WHEEL ZOOM
+   ========================================================= */
+
+viewport.addEventListener(
+    "wheel",
+    function(event) {
+
+        event.preventDefault();
+
+        if (event.deltaY < 0) {
+
+            zoomIn();
+
+        }
+
+        else {
+
+            zoomOut();
+
+        }
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+/* =========================================================
+   SYNCHRONIZED PAN
+   ========================================================= */
+
+viewport.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        /*
+            Do NOT start image dragging when
+            grabbing the slider.
+        */
+
+        if (
+            sliderEnabled &&
+            (
+                event.target === sliderDivider ||
+                sliderDivider.contains(event.target)
+            )
+        ) {
 
             return;
 
         }
 
 
-        ratings[letters[i]] =
-            parseInt(selected.value);
+        /*
+            Only allow panning when zoomed.
+        */
+
+        if (zoom <= 1) {
+
+            return;
+
+        }
+
+
+        isPanning = true;
+
+        viewport.setPointerCapture(
+            event.pointerId
+        );
+
+    }
+);
+
+
+viewport.addEventListener(
+    "pointermove",
+    function(event) {
+
+        if (!isPanning) {
+
+            return;
+
+        }
+
+
+        if (zoom <= 1) {
+
+            return;
+
+        }
+
+
+        panX += event.movementX;
+
+        panY += event.movementY;
+
+
+        /*
+            Same transform applied to both images.
+        */
+
+        applyTransform();
+
+    }
+);
+
+
+viewport.addEventListener(
+    "pointerup",
+    function(event) {
+
+        isPanning = false;
+
+        if (
+            viewport.hasPointerCapture(
+                event.pointerId
+            )
+        ) {
+
+            viewport.releasePointerCapture(
+                event.pointerId
+            );
+
+        }
+
+    }
+);
+
+
+viewport.addEventListener(
+    "pointercancel",
+    function() {
+
+        isPanning = false;
+
+    }
+);
+
+
+/* =========================================================
+   SLIDER COMPARISON
+   ========================================================= */
+
+function toggleSlider() {
+
+    sliderEnabled =
+        !sliderEnabled;
+
+
+    if (sliderEnabled) {
+
+        /*
+            Show comparison image.
+        */
+
+        sliderContainer.style.display =
+            "block";
+
+
+        sliderDivider.style.display =
+            "block";
+
+
+        sliderBtn.classList.add(
+            "active"
+        );
+
+
+        /*
+            Start at 50%.
+        */
+
+        sliderPosition = 50;
+
+        updateSliderPosition();
+
+    }
+
+    else {
+
+        /*
+            Hide comparison image.
+        */
+
+        sliderContainer.style.display =
+            "none";
+
+
+        sliderDivider.style.display =
+            "none";
+
+
+        sliderBtn.classList.remove(
+            "active"
+        );
 
     }
 
 
-    document.getElementById("nextBtn").disabled = true;
-
-
-    fetch("/save_rating", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-
-            image: {{ image_no }},
-
-            ratings: ratings
-
-        })
-
-    })
-
-
-    .then(response => response.json())
-
-
-    .then(data => {
-
-
-        if (
-            data.status === "success" ||
-            data.status === "already_saved"
-        ) {
-
-            window.location.href = "/next_image";
-
-        }
-
-        else {
-
-            alert("Unable to save rating.");
-
-            document.getElementById(
-                "nextBtn"
-            ).disabled = false;
-
-        }
-
-    })
-
-
-    .catch(error => {
-
-        console.error(error);
-
-        alert(
-            "Server error. Please try again."
-        );
-
-        document.getElementById(
-            "nextBtn"
-        ).disabled = false;
-
-    });
+    updateComparisonLabel();
 
 }
 
-</script>
 
+/* ---------------------------------------------------------
+   UPDATE SLIDER
+   --------------------------------------------------------- */
+
+function updateSliderPosition() {
+
+    sliderPosition =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                sliderPosition
+            )
+        );
+
+
+    /*
+        Show comparison image only
+        on the LEFT side of divider.
+    */
+
+    sliderContainer.style.clipPath =
+        "inset(0 " +
+        (100 - sliderPosition) +
+        "% 0 0)";
+
+
+    /*
+        Move divider.
+    */
+
+    sliderDivider.style.left =
+        sliderPosition + "%";
+
+}
+
+
+/* ---------------------------------------------------------
+   SET SLIDER POSITION
+   --------------------------------------------------------- */
+
+function setSliderFromPointer(event) {
+
+    const rect =
+        viewport.getBoundingClientRect();
+
+
+    sliderPosition =
+        (
+            (
+                event.clientX -
+                rect.left
+            )
+            /
+            rect.width
+        )
+        * 100;
+
+
+    updateSliderPosition();
+
+}
+
+
+/* ---------------------------------------------------------
+   DRAG SLIDER
+   --------------------------------------------------------- */
+
+sliderDivider.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        isPanning = false;
+
+
+        sliderDivider.setPointerCapture(
+            event.pointerId
+        );
+
+
+        setSliderFromPointer(event);
+
+    }
+);
+
+
+sliderDivider.addEventListener(
+    "pointermove",
+    function(event) {
+
+        if (
+            sliderDivider.hasPointerCapture(
+                event.pointerId
+            )
+        ) {
+
+            setSliderFromPointer(event);
+
+        }
+
+    }
+);
+
+
+sliderDivider.addEventListener(
+    "pointerup",
+    function(event) {
+
+        if (
+            sliderDivider.hasPointerCapture(
+                event.pointerId
+            )
+        ) {
+
+            sliderDivider.releasePointerCapture(
+                event.pointerId
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RATING
+   ========================================================= */
+
+function setRating(score) {
+
+    const letter =
+        letters[currentMethod];
+
+
+    /*
+        Save rating for current method.
+    */
+
+    ratings[letter] =
+        score;
+
+
+    /*
+        Update visible buttons.
+    */
+
+    updateRatingButtons();
+
+
+    /*
+        Enable Next only when
+        ALL FOUR images are rated.
+    */
+
+    updateNextButton();
+
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE RATING BUTTONS
+   --------------------------------------------------------- */
+
+function updateRatingButtons() {
+
+    const letter =
+        letters[currentMethod];
+
+
+    const currentScore =
+        ratings[letter];
+
+
+    document
+        .querySelectorAll(".rating-btn")
+        .forEach(function(button) {
+
+            const score =
+                parseInt(
+                    button.dataset.score
+                );
+
+
+            button.classList.toggle(
+                "selected",
+                score === currentScore
+            );
+
+        });
+
+
+    if (currentScore === null) {
+
+        ratingStatus.textContent =
+            "Please rate Image " +
+            letter +
+            ".";
+
+    }
+
+    else {
+
+        ratingStatus.textContent =
+            "Image " +
+            letter +
+            " rated " +
+            currentScore +
+            "/5.";
+
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   CHECK IF ALL RATINGS EXIST
+   --------------------------------------------------------- */
+
+function updateNextButton() {
+
+    const complete =
+        letters.every(
+            function(letter) {
+
+                return ratings[letter] !== null;
+
+            }
+        );
+
+
+    nextBtn.disabled =
+        !complete;
+
+}
+
+
+/* =========================================================
+   SUBMIT RATINGS
+   ========================================================= */
+
+function submitRating() {
+
+    /*
+        Safety check.
+    */
+
+    const complete =
+        letters.every(
+            function(letter) {
+
+                return ratings[letter] !== null;
+
+            }
+        );
+
+
+    if (!complete) {
+
+        alert(
+            "Please rate all four images before continuing."
+        );
+
+        return;
+
+    }
+
+
+    nextBtn.disabled =
+        true;
+
+
+    fetch(
+        "/save_rating",
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                image: {{ image_no }},
+
+                ratings: ratings
+
+            })
+
+        }
+    )
+
+
+    .then(
+        function(response) {
+
+            return response.json();
+
+        }
+    )
+
+
+    .then(
+        function(data) {
+
+            if (
+                data.status === "success" ||
+                data.status === "already_saved"
+            ) {
+
+                window.location.href =
+                    "/next_image";
+
+            }
+
+            else {
+
+                alert(
+                    "Unable to save rating."
+                );
+
+                updateNextButton();
+
+            }
+
+        }
+    )
+
+
+    .catch(
+        function(error) {
+
+            console.error(error);
+
+            alert(
+                "Server error. Please try again."
+            );
+
+            updateNextButton();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+/*
+    Comparison is OFF initially.
+*/
+
+sliderContainer.style.display =
+    "none";
+
+sliderDivider.style.display =
+    "none";
+
+
+/*
+    Start with Image A.
+*/
+
+selectMethod(0);
+
+
+/*
+    Initial state.
+*/
+
+updateNextButton();
+
+applyTransform();
+
+</script>
 
 </div>
 

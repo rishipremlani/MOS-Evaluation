@@ -183,11 +183,18 @@ def finish():
 @app.route("/export")
 def export():
 
-    rows = Rating.query.all()
+    rows = Rating.query.order_by(
+        Rating.image_id,
+        Rating.participant_id
+    ).all()
 
     def generate():
 
         data = csv.writer(Echo())
+
+        # ==========================================
+        # RAW RATINGS
+        # ==========================================
 
         yield data.writerow([
             "Participant",
@@ -208,6 +215,60 @@ def export():
                 r.score,
                 r.timestamp
             ])
+
+
+        # ==========================================
+        # AVERAGE MOS
+        # ==========================================
+
+        yield data.writerow([])
+        yield data.writerow([])
+        yield data.writerow([
+            "MODEL AVERAGE MOS"
+        ])
+
+        yield data.writerow([
+            "Method",
+            "Average MOS",
+            "Number of Ratings"
+        ])
+
+
+        methods = [
+            "Ours",
+            "MDASR",
+            "UnCapSTSR",
+            "TUDASR"
+        ]
+
+
+        for method in methods:
+
+            method_scores = [
+                r.score
+                for r in rows
+                if r.method == method
+            ]
+
+
+            if method_scores:
+
+                average = sum(method_scores) / len(method_scores)
+
+                yield data.writerow([
+                    method,
+                    round(average, 3),
+                    len(method_scores)
+                ])
+
+            else:
+
+                yield data.writerow([
+                    method,
+                    "",
+                    0
+                ])
+
 
     return Response(
         generate(),

@@ -11,33 +11,28 @@ class Participant(db.Model):
 
     __tablename__ = "participants"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
-    name = db.Column(db.String(100), nullable=True)
+    name = db.Column(
+        db.String(100),
+        nullable=True
+    )
 
-    age = db.Column(db.Integer)
+    age = db.Column(
+        db.Integer
+    )
 
-    profession = db.Column(db.String(100))
+    profession = db.Column(
+        db.String(100)
+    )
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-
-# -----------------------------
-# Image Table
-# -----------------------------
-class Image(db.Model):
-
-    __tablename__ = "images"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    image_name = db.Column(db.String(100), unique=True)
-
-    ours = db.Column(db.String(200))
-
-    method1 = db.Column(db.String(200))
-
-    method2 = db.Column(db.String(200))
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
 
 
 # -----------------------------
@@ -47,7 +42,10 @@ class Rating(db.Model):
 
     __tablename__ = "ratings"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     participant_id = db.Column(
         db.Integer,
@@ -55,13 +53,31 @@ class Rating(db.Model):
         nullable=False
     )
 
-    image_id = db.Column(db.Integer, nullable=False)
+    # Evaluation image number: 1–25
+    image_id = db.Column(
+        db.Integer,
+        nullable=False
+    )
 
-    method = db.Column(db.String(50), nullable=False)
+    # Actual SR method
+    # Ours / MDASR / UnCapSTSR / TUDASR
+    method = db.Column(
+        db.String(50),
+        nullable=False
+    )
 
-    shown_as = db.Column(db.String(1), nullable=False)
+    # Randomized blind label
+    # A / B / C / D
+    shown_as = db.Column(
+        db.String(1),
+        nullable=False
+    )
 
-    score = db.Column(db.Integer, nullable=False)
+    # MOS score: 1–5
+    score = db.Column(
+        db.Integer,
+        nullable=False
+    )
 
     timestamp = db.Column(
         db.DateTime,
