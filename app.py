@@ -197,7 +197,10 @@ def export():
         # ==========================================
 
         yield data.writerow([
-            "Participant",
+            "Participant_ID",
+            "Participant_Name",
+            "Participant_Age",
+            "Participant_Profession",
             "Image",
             "Method",
             "Shown_As",
@@ -207,8 +210,15 @@ def export():
 
         for r in rows:
 
+            participant = Participant.query.get(
+                r.participant_id
+            )
+
             yield data.writerow([
                 r.participant_id,
+                participant.name if participant else "",
+                participant.age if participant else "",
+                participant.profession if participant else "",
                 r.image_id,
                 r.method,
                 r.shown_as,
@@ -218,11 +228,12 @@ def export():
 
 
         # ==========================================
-        # AVERAGE MOS
+        # MODEL AVERAGE MOS
         # ==========================================
 
         yield data.writerow([])
         yield data.writerow([])
+
         yield data.writerow([
             "MODEL AVERAGE MOS"
         ])
@@ -233,14 +244,12 @@ def export():
             "Number of Ratings"
         ])
 
-
         methods = [
             "Ours",
             "MDASR",
             "UnCapSTSR",
             "TUDASR"
         ]
-
 
         for method in methods:
 
@@ -250,10 +259,12 @@ def export():
                 if r.method == method
             ]
 
-
             if method_scores:
 
-                average = sum(method_scores) / len(method_scores)
+                average = (
+                    sum(method_scores)
+                    / len(method_scores)
+                )
 
                 yield data.writerow([
                     method,
