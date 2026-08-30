@@ -808,6 +808,17 @@ let sliderEnabled = false;
 let sliderPosition = 50;
 
 let isPanning = false;
+let isPinching = false;
+
+let initialPinchDistance = 0;
+let initialPinchZoom = 1;
+
+let lastTouchCenterX = 0;
+let lastTouchCenterY = 0;
+let lastTouchX = 0;
+let lastTouchY = 0;
+
+const activePointers = new Map();
 
 
 
@@ -1297,16 +1308,45 @@ viewport.addEventListener(
 );
 
 /* =========================================================
-   SYNCHRONIZED PAN
+   TOUCH + MOUSE PAN / PINCH ZOOM
    ========================================================= */
+
+function getTouchDistance(touch1, touch2) {
+
+    const dx =
+        touch2.clientX - touch1.clientX;
+
+    const dy =
+        touch2.clientY - touch1.clientY;
+
+    return Math.sqrt(
+        dx * dx + dy * dy
+    );
+}
+
+
+function getTouchCenter(touch1, touch2) {
+
+    return {
+        x:
+            (touch1.clientX + touch2.clientX) / 2,
+
+        y:
+            (touch1.clientY + touch2.clientY) / 2
+    };
+}
+
+
+/* ---------------------------------------------------------
+   POINTER DOWN
+   --------------------------------------------------------- */
 
 viewport.addEventListener(
     "pointerdown",
     function(event) {
 
         /*
-            Do NOT start image dragging when
-            grabbing the slider.
+            Do not interfere with slider dragging.
         */
 
         if (
@@ -1318,77 +1358,406 @@ viewport.addEventListener(
         ) {
 
             return;
-
         }
 
 
         /*
-            Only allow panning when zoomed.
+            Capture the pointer so movement continues
+            even if the finger moves slightly outside
+            the original element.
         */
-
-        if (zoom <= 1) {
-
-            return;
-
-        }
-
-
-        isPanning = true;
 
         viewport.setPointerCapture(
             event.pointerId
         );
 
+
+        /*
+            Touch handling is performed using
+            active pointers.
+        */
+
+        if (event.pointerType === "touch") {
+
+            activePointers.set(
+                event.pointerId,
+                {
+                    x: event.clientX,
+                    y: event.clientY
+                }
+            );
+
+
+            /*
+                Two fingers = pinch mode.
+            */
+
+            if (activePointers.size === 2) {
+
+                const points =
+                    Array.from(
+                        activePointers.values()
+                    );
+
+
+                initialPinchDistance =
+                    getTouchDistance(
+                        points[0],
+                        points[1]
+                    );
+
+
+                initialPinchZoom =
+                    zoom;
+
+
+                const center =
+                    getTouchCenter(
+                        points[0],
+                        points[1]
+                    );
+
+
+                lastTouchCenterX =
+                    center.x;
+
+                lastTouchCenterY =
+                    center.y;
+
+
+                isPinching = true;
+
+                isPanning = false;
+
+            }
+
+            /*
+                One finger = normal pan.
+            */
+
+            else if (
+                activePointers.size === 1 &&
+                zoom > 1
+            ) {
+
+                isPanning = true;
+
+            }
+
+            return;
+        }
+
+
+        /*
+            Desktop mouse pan.
+        */
+
+        if (
+            event.pointerType === "mouse" &&
+            zoom > 1
+        ) {
+
+            isPanning = true;
+
+        }
+
     }
 );
 
+
+/* ---------------------------------------------------------
+   POINTER MOVE
+   --------------------------------------------------------- */
 
 viewport.addEventListener(
     "pointermove",
     function(event) {
 
-        if (!isPanning) {
+        /*
+            Update touch position.
+        */
+
+        if (
+            event.pointerType === "touch" &&
+            activePointers.has(event.pointerId)
+        ) {
+
+            activePointers.set(
+                event.pointerId,
+                {
+                    x: event.clientX,
+                    y: event.clientY
+                }
+            );
+
+
+            /*
+                TWO-FINGER PINCH
+            */
+
+            if (
+                isPinching &&
+                activePointers.size === 2
+            ) {
+
+                const points =
+                    Array.from(
+                        activePointers.values()
+                    );
+
+
+                const currentDistance =
+                    getTouchDistance(
+                        points[0],
+                        points[1]
+                    );
+
+
+                if (
+                    initialPinchDistance > 0
+                ) {
+
+                    /*
+                        Calculate scale relative
+                        to the moment the pinch started.
+                    */
+
+                    const scale =
+                        currentDistance /
+                        initialPinchDistance;
+
+
+                    let newZoom =
+                        initialPinchZoom *
+                        scale;
+
+
+                    newZoom =
+                        Math.max(
+                            MIN_ZOOM,
+                            Math.min(
+                                MAX_ZOOM,
+                                newZoom
+                            )
+                        );
+
+
+                    /*
+                        Move the image with the
+                        center of the two fingers.
+                    */
+
+                    const center =
+                        getTouchCenter(
+                            points[0],
+                            points[1]
+                        );
+
+
+                    const centerDX =
+                        center.x -
+                        lastTouchCenterX;
+
+
+                    const centerDY =
+                        center.y -
+                        lastTouchCenterY;
+
+
+                    panX += centerDX;
+                    panY += centerDY;
+
+
+                    zoom = newZoom;
+
+
+                    if (zoom === 1) {
+
+                        panX = 0;
+                        panY = 0;
+
+                    }
+
+
+                    clampPan();
+
+                    applyTransform();
+
+
+                    lastTouchCenterX =
+                        center.x;
+
+                    lastTouchCenterY =
+                        center.y;
+
+                }
+
+
+                return;
+            }
+
+
+            /*
+                ONE-FINGER PAN
+            */
+
+            if (
+                activePointers.size === 1 &&
+                isPanning &&
+                zoom > 1
+            ) {
+
+                const point =
+                    activePointers.values()
+                    .next()
+                    .value;
+
+
+                /*
+                    movementX/movementY are not
+                    reliable enough for touch,
+                    so calculate movement ourselves.
+                */
+
+                if (
+                    !lastTouchX ||
+                    !lastTouchY
+                ) {
+
+                    lastTouchX =
+                        point.x;
+
+                    lastTouchY =
+                        point.y;
+
+                    return;
+
+                }
+
+
+                panX +=
+                    point.x -
+                    lastTouchX;
+
+                panY +=
+                    point.y -
+                    lastTouchY;
+
+
+                lastTouchX =
+                    point.x;
+
+                lastTouchY =
+                    point.y;
+
+
+                clampPan();
+
+                applyTransform();
+
+            }
 
             return;
-
         }
 
 
-        if (zoom <= 1) {
+        /*
+            DESKTOP MOUSE PAN
+        */
 
-            return;
+        if (
+            event.pointerType === "mouse" &&
+            isPanning &&
+            zoom > 1
+        ) {
+
+            panX +=
+                event.movementX;
+
+            panY +=
+                event.movementY;
+
+
+            clampPan();
+
+            applyTransform();
 
         }
-
-
-        panX += event.movementX;
-        panY += event.movementY;
-
-
-        /*
-            Prevent the image from being
-            dragged completely outside.
-        */
-
-        clampPan();
-
-
-        /*
-            Apply EXACTLY the same transform
-            to both images.
-        */
-
-        applyTransform();
 
     }
 );
 
 
+/* ---------------------------------------------------------
+   POINTER UP
+   --------------------------------------------------------- */
+
 viewport.addEventListener(
     "pointerup",
     function(event) {
 
-        isPanning = false;
+        if (
+            event.pointerType === "touch"
+        ) {
+
+            activePointers.delete(
+                event.pointerId
+            );
+
+
+            /*
+                Pinch ended.
+            */
+
+            if (
+                activePointers.size < 2
+            ) {
+
+                isPinching = false;
+
+            }
+
+
+            /*
+                If one finger remains after
+                pinch, allow it to continue panning.
+            */
+
+            if (
+                activePointers.size === 1 &&
+                zoom > 1
+            ) {
+
+                const point =
+                    activePointers.values()
+                    .next()
+                    .value;
+
+
+                lastTouchX =
+                    point.x;
+
+                lastTouchY =
+                    point.y;
+
+                isPanning = true;
+
+            }
+
+            else {
+
+                isPanning = false;
+
+            }
+
+        }
+
+        else {
+
+            isPanning = false;
+
+        }
+
 
         if (
             viewport.hasPointerCapture(
@@ -1406,14 +1775,31 @@ viewport.addEventListener(
 );
 
 
+/* ---------------------------------------------------------
+   POINTER CANCEL
+   --------------------------------------------------------- */
+
 viewport.addEventListener(
     "pointercancel",
-    function() {
+    function(event) {
+
+        if (
+            event.pointerType === "touch"
+        ) {
+
+            activePointers.delete(
+                event.pointerId
+            );
+
+        }
 
         isPanning = false;
+        isPinching = false;
 
     }
 );
+
+
 
 
 /* =========================================================
