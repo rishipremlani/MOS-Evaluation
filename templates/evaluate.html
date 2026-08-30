@@ -65,15 +65,11 @@ href="{{ url_for('static', filename='css/style.css') }}">
 .method-btn {
     width: 58px;
     height: 42px;
-
     border: 1px solid #bbb;
     border-radius: 8px;
-
     background: #f4f4f4;
-
     font-size: 17px;
     font-weight: 600;
-
     cursor: pointer;
 }
 
@@ -96,22 +92,16 @@ href="{{ url_for('static', filename='css/style.css') }}">
     display: flex;
     justify-content: center;
     align-items: center;
-
     gap: 8px;
-
     margin-bottom: 12px;
 }
 
 .tool-btn {
     border: 1px solid #bbb;
     border-radius: 7px;
-
     background: white;
-
     padding: 7px 13px;
-
     font-size: 14px;
-
     cursor: pointer;
 }
 
@@ -130,63 +120,52 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .comparison-viewport {
-
     position: relative;
-
     width: 640px;
     height: 640px;
-
     overflow: hidden;
-
     background: #eee;
-
     border-radius: 10px;
 
     box-shadow:
         0 2px 10px rgba(0,0,0,0.15);
 
     cursor: grab;
-
     user-select: none;
 
+    /* REQUIRED FOR CUSTOM TOUCH/PINCH HANDLING */
     touch-action: none;
+
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
+
 .comparison-viewport:active {
     cursor: grabbing;
 }
+
 
 /* ================================
    IMAGE LAYERS
    ================================ */
 
 .image-layer {
-
     position: absolute;
-
     left: 0;
     top: 0;
-
     width: 100%;
     height: 100%;
-
     transform-origin: center center;
-
     pointer-events: none;
 }
 
 .image-layer img {
-
     width: 100%;
     height: 100%;
-
     object-fit: contain;
-
     display: block;
-
     pointer-events: none;
-
     user-select: none;
-
     -webkit-user-drag: none;
 }
 
@@ -196,51 +175,36 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .slider-container {
-
     position: absolute;
-
     left: 0;
     top: 0;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
-
     pointer-events: none;
 }
 
 .slider-container .image-layer {
-
     position: absolute;
 }
 
-
 .slider-divider {
-
     position: absolute;
-
     top: 0;
     bottom: 0;
-
     width: 4px;
-
     background: white;
 
     box-shadow:
         0 0 6px rgba(0,0,0,0.4);
 
     cursor: ew-resize;
-
     z-index: 20;
-
     display: none;
 }
 
 .slider-handle {
-
     position: absolute;
-
     left: 50%;
     top: 50%;
 
@@ -250,18 +214,14 @@ href="{{ url_for('static', filename='css/style.css') }}">
     height: 42px;
 
     border-radius: 50%;
-
     background: white;
-
     border: 2px solid #333;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     font-size: 18px;
-
     color: #333;
 
     box-shadow:
@@ -274,15 +234,10 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .comparison-label {
-
     min-height: 22px;
-
     margin-bottom: 6px;
-
     font-size: 14px;
-
     color: #666;
-
     text-align: center;
 }
 
@@ -292,13 +247,9 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .zoom-info {
-
     text-align: center;
-
     font-size: 13px;
-
     color: #777;
-
     margin-top: 7px;
 }
 
@@ -308,63 +259,45 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .rating-section {
-
     margin-top: 25px;
-
     text-align: center;
 }
 
 .rating-title {
-
     font-size: 18px;
-
     font-weight: 600;
-
     margin-bottom: 12px;
 }
 
 .rating-buttons {
-
     display: flex;
-
     justify-content: center;
-
     gap: 14px;
 }
 
 .rating-btn {
-
     width: 55px;
     height: 55px;
 
     border-radius: 50%;
-
     border: 2px solid #bbb;
-
     background: white;
 
     font-size: 20px;
-
     font-weight: 600;
-
     cursor: pointer;
 
     transition: 0.15s;
 }
 
 .rating-btn:hover {
-
     background: #f0f0f0;
 }
 
 .rating-btn.selected {
-
     background: #333;
-
     color: white;
-
     border-color: #333;
-
     transform: scale(1.08);
 }
 
@@ -374,11 +307,8 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 .rating-status {
-
     margin-top: 12px;
-
     font-size: 14px;
-
     color: #777;
 }
 
@@ -388,30 +318,23 @@ href="{{ url_for('static', filename='css/style.css') }}">
    ================================ */
 
 #nextBtn {
-
     margin-top: 22px;
-
     padding: 12px 35px;
 
     border: none;
-
     border-radius: 8px;
 
     background: #333;
-
     color: white;
 
     font-size: 18px;
-
     font-weight: 600;
 
     cursor: pointer;
 }
 
 #nextBtn:disabled {
-
     background: #aaa;
-
     cursor: not-allowed;
 }
 
@@ -423,30 +346,24 @@ href="{{ url_for('static', filename='css/style.css') }}">
 @media (max-width: 700px) {
 
     .comparison-viewport {
-
         width: 95vw;
         height: 95vw;
-
         max-width: 640px;
         max-height: 640px;
     }
 
     .reference img {
-
         width: 180px;
         height: 180px;
     }
 
     .rating-buttons {
-
         gap: 8px;
     }
 
     .rating-btn {
-
         width: 46px;
         height: 46px;
-
         font-size: 18px;
     }
 
@@ -471,10 +388,6 @@ Progress: {{ image_no }}/25
 </p>
 
 
-<!-- ===================================================== -->
-<!-- LOW RESOLUTION REFERENCE -->
-<!-- ===================================================== -->
-
 <div class="reference">
 
 <h3>Reference Low Resolution Image</h3>
@@ -492,13 +405,8 @@ alt="Low Resolution Reference">
 <h3>Rate the Images</h3>
 
 
-<!-- ===================================================== -->
-<!-- SR COMPARISON INTERFACE -->
-<!-- ===================================================== -->
-
 <div class="comparison-section">
 
-    <!-- A / B / C / D method selector -->
     <div class="method-buttons">
 
         <button
@@ -536,14 +444,12 @@ alt="Low Resolution Reference">
     </div>
 
 
-    <!-- Comparison label -->
     <div
         id="comparisonLabel"
         class="comparison-label">
     </div>
 
 
-    <!-- Toolbar -->
     <div class="toolbar">
 
         <button
@@ -561,7 +467,7 @@ alt="Low Resolution Reference">
             Reset
         </button>
 
-       <button
+        <button
             type="button"
             class="tool-btn"
             onclick="zoomIn()"
@@ -580,16 +486,9 @@ alt="Low Resolution Reference">
     </div>
 
 
-    <!-- ================================================= -->
-    <!-- IMAGE VIEWPORT -->
-    <!-- ================================================= -->
-
     <div
         id="comparisonViewport"
         class="comparison-viewport">
-
-
-        <!-- Main/current image -->
 
         <div
             id="mainLayer"
@@ -602,8 +501,6 @@ alt="Low Resolution Reference">
 
         </div>
 
-
-        <!-- Slider comparison image -->
 
         <div
             id="sliderContainer"
@@ -622,8 +519,6 @@ alt="Low Resolution Reference">
 
         </div>
 
-
-        <!-- Slider divider -->
 
         <div
             id="sliderDivider"
@@ -644,10 +539,6 @@ alt="Low Resolution Reference">
         Zoom: 100%
     </div>
 
-
-    <!-- ================================================= -->
-    <!-- RATING -->
-    <!-- ================================================= -->
 
     <div class="rating-section">
 
@@ -729,25 +620,19 @@ alt="Low Resolution Reference">
 
 </center>
 
+
 <script>
 
 /* =========================================================
    MOS COMPARISON JAVASCRIPT
    ========================================================= */
 
-/*
-    A = methods[0]
-    B = methods[1]
-    C = methods[2]
-    D = methods[3]
-*/
-
 const letters = ["A", "B", "C", "D"];
 
 
-/* ---------------------------------------------------------
-   IMAGE PATHS FROM FLASK
-   --------------------------------------------------------- */
+/* =========================================================
+   IMAGE PATHS
+   ========================================================= */
 
 const methodPaths = [
     {% for method in methods %}
@@ -756,23 +641,17 @@ const methodPaths = [
 ];
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    STATE
-   --------------------------------------------------------- */
-
-
+   ========================================================= */
 
 let comparisonMethod = 1;
 
 let zoom = 1;
 
 let panX = 0;
-
 let panY = 0;
 
-// =========================================================
-// PER-METHOD VIEW STATE
-// =========================================================
 
 const viewStates = {
 
@@ -802,10 +681,15 @@ const viewStates = {
 
 };
 
+
 let currentMethod = 0;
 let sliderEnabled = false;
-
 let sliderPosition = 50;
+
+
+/* =========================================================
+   POINTER / TOUCH STATE
+   ========================================================= */
 
 let isPanning = false;
 let isPinching = false;
@@ -815,23 +699,16 @@ let initialPinchZoom = 1;
 
 let lastTouchCenterX = 0;
 let lastTouchCenterY = 0;
-let lastTouchX = 0;
-let lastTouchY = 0;
+
+let lastPanX = 0;
+let lastPanY = 0;
 
 const activePointers = new Map();
 
 
-
-/*
-    Store rating for each image independently.
-
-    Example:
-
-    A = 4
-    B = 3
-    C = 5
-    D = 4
-*/
+/* =========================================================
+   RATINGS
+   ========================================================= */
 
 let ratings = {
 
@@ -843,9 +720,9 @@ let ratings = {
 };
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ELEMENTS
-   --------------------------------------------------------- */
+   ========================================================= */
 
 const viewport =
     document.getElementById("comparisonViewport");
@@ -886,16 +763,15 @@ const ratingStatus =
 const nextBtn =
     document.getElementById("nextBtn");
 
+
 /* =========================================================
    METHOD SELECTION
    ========================================================= */
-// =========================================================
-// SAVE CURRENT VIEW STATE
-// =========================================================
 
 function saveCurrentViewState() {
 
-    const letter = letters[currentMethod];
+    const letter =
+        letters[currentMethod];
 
     viewStates[letter] = {
 
@@ -908,15 +784,13 @@ function saveCurrentViewState() {
 }
 
 
-// =========================================================
-// RESTORE VIEW STATE
-// =========================================================
-
 function restoreViewState() {
 
-    const letter = letters[currentMethod];
+    const letter =
+        letters[currentMethod];
 
-    const state = viewStates[letter];
+    const state =
+        viewStates[letter];
 
     zoom = state.zoom;
     panX = state.panX;
@@ -926,43 +800,24 @@ function restoreViewState() {
 
 }
 
+
 function selectMethod(index) {
 
     saveCurrentViewState();
+
     currentMethod = index;
 
-    /*
-        Compare current image against the next image.
-
-        A -> B
-        B -> C
-        C -> D
-        D -> A
-    */
-
     comparisonMethod =
-        (currentMethod + 1) % methodPaths.length;
+        (currentMethod + 1) %
+        methodPaths.length;
 
-
-    /*
-        Change main image.
-    */
 
     mainImage.src =
         methodPaths[currentMethod];
 
-
-    /*
-        Change comparison image.
-    */
-
     comparisonImage.src =
         methodPaths[comparisonMethod];
 
-
-    /*
-        Highlight selected A/B/C/D button.
-    */
 
     document
         .querySelectorAll(".method-btn")
@@ -976,30 +831,13 @@ function selectMethod(index) {
         });
 
 
-    /*
-        Update rating heading.
-    */
-
     currentLetter.textContent =
         letters[currentMethod];
 
-
-    /*
-        Update comparison text.
-    */
-
     updateComparisonLabel();
-
-
-    /*
-        Restore rating for this method.
-    */
 
     updateRatingButtons();
 
-
-   // Restore the zoom/pan state previously used
-    // for this method.
     restoreViewState();
 
 }
@@ -1041,9 +879,9 @@ const MAX_ZOOM = 10;
 const ZOOM_STEP = 0.25;
 
 
-/* ---------------------------------------------------------
-   APPLY SAME TRANSFORM TO BOTH IMAGES
-   --------------------------------------------------------- */
+/* =========================================================
+   APPLY TRANSFORM
+   ========================================================= */
 
 function applyTransform() {
 
@@ -1058,15 +896,11 @@ function applyTransform() {
         ")";
 
 
-    /*
-        VERY IMPORTANT:
-        Both images receive exactly the same
-        transform so they remain registered.
-    */
+    mainLayer.style.transform =
+        transform;
 
-    mainLayer.style.transform = transform;
-
-    comparisonLayer.style.transform = transform;
+    comparisonLayer.style.transform =
+        transform;
 
 
     zoomInfo.textContent =
@@ -1076,9 +910,9 @@ function applyTransform() {
 }
 
 
-/* ---------------------------------------------------------
-   LIMIT PAN
-   --------------------------------------------------------- */
+/* =========================================================
+   CLAMP PAN
+   ========================================================= */
 
 function clampPan() {
 
@@ -1094,13 +928,6 @@ function clampPan() {
     const rect =
         viewport.getBoundingClientRect();
 
-
-    /*
-        Maximum translation allowed.
-
-        This prevents the image from being
-        dragged completely outside the viewport.
-    */
 
     const maxX =
         (rect.width * (zoom - 1)) / 2;
@@ -1121,12 +948,13 @@ function clampPan() {
             -maxY,
             Math.min(maxY, panY)
         );
+
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    SET ZOOM
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function setZoom(newZoom) {
 
@@ -1148,36 +976,35 @@ function setZoom(newZoom) {
     clampPan();
 
     applyTransform();
+
 }
 
 
-/* ---------------------------------------------------------
-   ZOOM IN
-   --------------------------------------------------------- */
+/* =========================================================
+   BUTTON ZOOM
+   ========================================================= */
 
 function zoomIn() {
 
     setZoom(
         zoom + ZOOM_STEP
     );
+
 }
 
-
-/* ---------------------------------------------------------
-   ZOOM OUT
-   --------------------------------------------------------- */
 
 function zoomOut() {
 
     setZoom(
         zoom - ZOOM_STEP
     );
+
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    RESET
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function resetView() {
 
@@ -1188,7 +1015,6 @@ function resetView() {
 
     sliderPosition = 50;
 
-    // Save reset state for current method
     saveCurrentViewState();
 
     applyTransform();
@@ -1203,7 +1029,7 @@ function resetView() {
 
 
 /* =========================================================
-   CURSOR-CENTERED MOUSE WHEEL ZOOM
+   MOUSE WHEEL ZOOM
    ========================================================= */
 
 viewport.addEventListener(
@@ -1217,14 +1043,9 @@ viewport.addEventListener(
             viewport.getBoundingClientRect();
 
 
-        /*
-            Mouse position relative to viewport center.
-        */
-
         const mouseX =
             event.clientX -
             (rect.left + rect.width / 2);
-
 
         const mouseY =
             event.clientY -
@@ -1266,23 +1087,19 @@ viewport.addEventListener(
         }
 
 
-        /*
-            Adjust pan so the point underneath
-            the mouse remains approximately fixed.
-        */
-
         const zoomRatio =
             newZoom / oldZoom;
 
 
         panX =
             mouseX -
-            (mouseX - panX) * zoomRatio;
-
+            (mouseX - panX) *
+            zoomRatio;
 
         panY =
             mouseY -
-            (mouseY - panY) * zoomRatio;
+            (mouseY - panY) *
+            zoomRatio;
 
 
         zoom =
@@ -1307,499 +1124,487 @@ viewport.addEventListener(
     }
 );
 
+
 /* =========================================================
-   TOUCH + MOUSE PAN / PINCH ZOOM
+   PINCH HELPERS
    ========================================================= */
 
-function getTouchDistance(touch1, touch2) {
+function getTouchDistance(pointA, pointB) {
 
     const dx =
-        touch2.clientX - touch1.clientX;
+        pointA.x - pointB.x;
 
     const dy =
-        touch2.clientY - touch1.clientY;
+        pointA.y - pointB.y;
 
     return Math.sqrt(
-        dx * dx + dy * dy
+        dx * dx +
+        dy * dy
     );
+
 }
 
 
-function getTouchCenter(touch1, touch2) {
+function getTouchCenter(pointA, pointB) {
 
     return {
+
         x:
-            (touch1.clientX + touch2.clientX) / 2,
+            (pointA.x + pointB.x) / 2,
 
         y:
-            (touch1.clientY + touch2.clientY) / 2
+            (pointA.y + pointB.y) / 2
+
     };
+
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    POINTER DOWN
-   --------------------------------------------------------- */
+   ========================================================= */
 
 viewport.addEventListener(
     "pointerdown",
     function(event) {
 
         /*
-            Do not interfere with slider dragging.
+            Ignore the slider divider.
         */
 
         if (
             sliderEnabled &&
-            (
-                event.target === sliderDivider ||
-                sliderDivider.contains(event.target)
-            )
+            event.target.closest(".slider-divider")
         ) {
 
             return;
+
         }
 
 
-        /*
-            Capture the pointer so movement continues
-            even if the finger moves slightly outside
-            the original element.
-        */
+        event.preventDefault();
+
 
         viewport.setPointerCapture(
             event.pointerId
         );
 
 
+        activePointers.set(
+            event.pointerId,
+            {
+                x: event.clientX,
+                y: event.clientY
+            }
+        );
+
+
         /*
-            Touch handling is performed using
-            active pointers.
+            TWO FINGERS:
+            Start pinch.
         */
 
-        if (event.pointerType === "touch") {
+        if (activePointers.size === 2) {
 
-            activePointers.set(
-                event.pointerId,
-                {
-                    x: event.clientX,
-                    y: event.clientY
-                }
-            );
+            const points =
+                Array.from(
+                    activePointers.values()
+                );
 
 
-            /*
-                Two fingers = pinch mode.
-            */
-
-            if (activePointers.size === 2) {
-
-                const points =
-                    Array.from(
-                        activePointers.values()
-                    );
+            initialPinchDistance =
+                getTouchDistance(
+                    points[0],
+                    points[1]
+                );
 
 
-                initialPinchDistance =
-                    getTouchDistance(
-                        points[0],
-                        points[1]
-                    );
+            initialPinchZoom =
+                zoom;
 
 
-                initialPinchZoom =
-                    zoom;
+            const center =
+                getTouchCenter(
+                    points[0],
+                    points[1]
+                );
 
 
-                const center =
-                    getTouchCenter(
-                        points[0],
-                        points[1]
-                    );
+            lastTouchCenterX =
+                center.x;
+
+            lastTouchCenterY =
+                center.y;
 
 
-                lastTouchCenterX =
-                    center.x;
+            isPinching = true;
+            isPanning = false;
 
-                lastTouchCenterY =
-                    center.y;
-
-
-                isPinching = true;
-
-                isPanning = false;
-
-            }
-
-            /*
-                One finger = normal pan.
-            */
-
-            else if (
-                activePointers.size === 1 &&
-                zoom > 1
-            ) {
-
-                isPanning = true;
-
-            }
 
             return;
+
         }
 
 
         /*
-            Desktop mouse pan.
+            ONE FINGER:
+            Start normal pan.
         */
 
-        if (
-            event.pointerType === "mouse" &&
-            zoom > 1
-        ) {
+        if (activePointers.size === 1) {
 
             isPanning = true;
+            isPinching = false;
+
+            lastPanX = event.clientX;
+            lastPanY = event.clientY;
 
         }
 
+    },
+    {
+        passive: false
     }
 );
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    POINTER MOVE
-   --------------------------------------------------------- */
+   ========================================================= */
 
 viewport.addEventListener(
     "pointermove",
     function(event) {
 
-        /*
-            Update touch position.
-        */
-
         if (
-            event.pointerType === "touch" &&
-            activePointers.has(event.pointerId)
+            !activePointers.has(
+                event.pointerId
+            )
         ) {
 
-            activePointers.set(
-                event.pointerId,
-                {
-                    x: event.clientX,
-                    y: event.clientY
-                }
-            );
-
-
-            /*
-                TWO-FINGER PINCH
-            */
-
-            if (
-                isPinching &&
-                activePointers.size === 2
-            ) {
-
-                const points =
-                    Array.from(
-                        activePointers.values()
-                    );
-
-
-                const currentDistance =
-                    getTouchDistance(
-                        points[0],
-                        points[1]
-                    );
-
-
-                if (
-                    initialPinchDistance > 0
-                ) {
-
-                    /*
-                        Calculate scale relative
-                        to the moment the pinch started.
-                    */
-
-                    const scale =
-                        currentDistance /
-                        initialPinchDistance;
-
-
-                    let newZoom =
-                        initialPinchZoom *
-                        scale;
-
-
-                    newZoom =
-                        Math.max(
-                            MIN_ZOOM,
-                            Math.min(
-                                MAX_ZOOM,
-                                newZoom
-                            )
-                        );
-
-
-                    /*
-                        Move the image with the
-                        center of the two fingers.
-                    */
-
-                    const center =
-                        getTouchCenter(
-                            points[0],
-                            points[1]
-                        );
-
-
-                    const centerDX =
-                        center.x -
-                        lastTouchCenterX;
-
-
-                    const centerDY =
-                        center.y -
-                        lastTouchCenterY;
-
-
-                    panX += centerDX;
-                    panY += centerDY;
-
-
-                    zoom = newZoom;
-
-
-                    if (zoom === 1) {
-
-                        panX = 0;
-                        panY = 0;
-
-                    }
-
-
-                    clampPan();
-
-                    applyTransform();
-
-
-                    lastTouchCenterX =
-                        center.x;
-
-                    lastTouchCenterY =
-                        center.y;
-
-                }
-
-
-                return;
-            }
-
-
-            /*
-                ONE-FINGER PAN
-            */
-
-            if (
-                activePointers.size === 1 &&
-                isPanning &&
-                zoom > 1
-            ) {
-
-                const point =
-                    activePointers.values()
-                    .next()
-                    .value;
-
-
-                /*
-                    movementX/movementY are not
-                    reliable enough for touch,
-                    so calculate movement ourselves.
-                */
-
-                if (
-                    !lastTouchX ||
-                    !lastTouchY
-                ) {
-
-                    lastTouchX =
-                        point.x;
-
-                    lastTouchY =
-                        point.y;
-
-                    return;
-
-                }
-
-
-                panX +=
-                    point.x -
-                    lastTouchX;
-
-                panY +=
-                    point.y -
-                    lastTouchY;
-
-
-                lastTouchX =
-                    point.x;
-
-                lastTouchY =
-                    point.y;
-
-
-                clampPan();
-
-                applyTransform();
-
-            }
-
             return;
+
         }
 
 
+        event.preventDefault();
+
+
+        activePointers.set(
+            event.pointerId,
+            {
+                x: event.clientX,
+                y: event.clientY
+            }
+        );
+
+
         /*
-            DESKTOP MOUSE PAN
+            =================================================
+            TWO-FINGER PINCH
+            =================================================
         */
 
         if (
-            event.pointerType === "mouse" &&
-            isPanning &&
-            zoom > 1
+            activePointers.size === 2
         ) {
 
+            const points =
+                Array.from(
+                    activePointers.values()
+                );
+
+
+            const currentDistance =
+                getTouchDistance(
+                    points[0],
+                    points[1]
+                );
+
+
+            if (
+                initialPinchDistance <= 0
+            ) {
+
+                return;
+
+            }
+
+
+            const center =
+                getTouchCenter(
+                    points[0],
+                    points[1]
+                );
+
+
+            /*
+                Calculate pinch scale.
+            */
+
+            const scale =
+                currentDistance /
+                initialPinchDistance;
+
+
+            const newZoom =
+                Math.max(
+                    MIN_ZOOM,
+                    Math.min(
+                        MAX_ZOOM,
+                        initialPinchZoom *
+                        scale
+                    )
+                );
+
+
+            const rect =
+                viewport.getBoundingClientRect();
+
+
+            /*
+                Center of pinch relative
+                to viewport center.
+            */
+
+            const centerX =
+                center.x -
+                (
+                    rect.left +
+                    rect.width / 2
+                );
+
+
+            const centerY =
+                center.y -
+                (
+                    rect.top +
+                    rect.height / 2
+                );
+
+
+            const oldZoom =
+                zoom;
+
+
+            const zoomRatio =
+                newZoom /
+                oldZoom;
+
+
+            /*
+                Keep the point between the
+                fingers fixed while zooming.
+            */
+
+            panX =
+                centerX -
+                (
+                    centerX - panX
+                ) *
+                zoomRatio;
+
+
+            panY =
+                centerY -
+                (
+                    centerY - panY
+                ) *
+                zoomRatio;
+
+
+            /*
+                Also move the image when the
+                two-finger center moves.
+            */
+
             panX +=
-                event.movementX;
+                center.x -
+                lastTouchCenterX;
 
             panY +=
-                event.movementY;
+                center.y -
+                lastTouchCenterY;
+
+
+            zoom =
+                newZoom;
+
+
+            if (zoom === 1) {
+
+                panX = 0;
+                panY = 0;
+
+            }
 
 
             clampPan();
 
             applyTransform();
 
+
+            lastTouchCenterX =
+                center.x;
+
+            lastTouchCenterY =
+                center.y;
+
+
+            return;
+
         }
 
+
+        /*
+            =================================================
+            ONE-FINGER PAN
+            =================================================
+        */
+
+        if (
+            activePointers.size === 1 &&
+            isPanning &&
+            zoom > 1
+        ) {
+
+            const dx =
+                event.clientX -
+                lastPanX;
+
+            const dy =
+                event.clientY -
+                lastPanY;
+
+
+            panX += dx;
+            panY += dy;
+
+
+            clampPan();
+
+            applyTransform();
+
+
+            lastPanX =
+                event.clientX;
+
+            lastPanY =
+                event.clientY;
+
+        }
+
+    },
+    {
+        passive: false
     }
 );
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    POINTER UP
-   --------------------------------------------------------- */
+   ========================================================= */
+
+function endPointer(event) {
+
+    activePointers.delete(
+        event.pointerId
+    );
+
+
+    /*
+        Release pointer capture.
+    */
+
+    if (
+        viewport.hasPointerCapture(
+            event.pointerId
+        )
+    ) {
+
+        viewport.releasePointerCapture(
+            event.pointerId
+        );
+
+    }
+
+
+    /*
+        Two-finger pinch ended.
+        If one finger remains, restart
+        one-finger pan from its current
+        position.
+    */
+
+    if (activePointers.size === 1) {
+
+        const remaining =
+            Array.from(
+                activePointers.values()
+            )[0];
+
+
+        isPinching = false;
+        isPanning = true;
+
+
+        lastPanX =
+            remaining.x;
+
+        lastPanY =
+            remaining.y;
+
+
+        initialPinchDistance = 0;
+
+    }
+
+    else {
+
+        isPinching = false;
+        isPanning = false;
+
+        initialPinchDistance = 0;
+
+    }
+
+}
+
 
 viewport.addEventListener(
     "pointerup",
+    endPointer
+);
+
+viewport.addEventListener(
+    "pointercancel",
+    endPointer
+);
+
+viewport.addEventListener(
+    "pointerleave",
     function(event) {
 
-        if (
-            event.pointerType === "touch"
-        ) {
-
-            activePointers.delete(
-                event.pointerId
-            );
-
-
-            /*
-                Pinch ended.
-            */
-
-            if (
-                activePointers.size < 2
-            ) {
-
-                isPinching = false;
-
-            }
-
-
-            /*
-                If one finger remains after
-                pinch, allow it to continue panning.
-            */
-
-            if (
-                activePointers.size === 1 &&
-                zoom > 1
-            ) {
-
-                const point =
-                    activePointers.values()
-                    .next()
-                    .value;
-
-
-                lastTouchX =
-                    point.x;
-
-                lastTouchY =
-                    point.y;
-
-                isPanning = true;
-
-            }
-
-            else {
-
-                isPanning = false;
-
-            }
-
-        }
-
-        else {
-
-            isPanning = false;
-
-        }
-
+        /*
+            Do not cancel while the pointer is
+            captured. Pointer capture keeps the
+            gesture alive outside the viewport.
+        */
 
         if (
-            viewport.hasPointerCapture(
+            !viewport.hasPointerCapture(
                 event.pointerId
             )
         ) {
 
-            viewport.releasePointerCapture(
-                event.pointerId
-            );
-
-        }
-
-    }
-);
-
-
-/* ---------------------------------------------------------
-   POINTER CANCEL
-   --------------------------------------------------------- */
-
-viewport.addEventListener(
-    "pointercancel",
-    function(event) {
-
-        if (
-            event.pointerType === "touch"
-        ) {
-
             activePointers.delete(
                 event.pointerId
             );
 
         }
 
-        isPanning = false;
-        isPinching = false;
-
     }
 );
-
-
 
 
 /* =========================================================
@@ -1814,26 +1619,15 @@ function toggleSlider() {
 
     if (sliderEnabled) {
 
-        /*
-            Show comparison image.
-        */
-
         sliderContainer.style.display =
             "block";
-
 
         sliderDivider.style.display =
             "block";
 
-
         sliderBtn.classList.add(
             "active"
         );
-
-
-        /*
-            Start at 50%.
-        */
 
         sliderPosition = 50;
 
@@ -1843,17 +1637,11 @@ function toggleSlider() {
 
     else {
 
-        /*
-            Hide comparison image.
-        */
-
         sliderContainer.style.display =
             "none";
 
-
         sliderDivider.style.display =
             "none";
-
 
         sliderBtn.classList.remove(
             "active"
@@ -1867,10 +1655,6 @@ function toggleSlider() {
 }
 
 
-/* ---------------------------------------------------------
-   UPDATE SLIDER
-   --------------------------------------------------------- */
-
 function updateSliderPosition() {
 
     sliderPosition =
@@ -1883,30 +1667,17 @@ function updateSliderPosition() {
         );
 
 
-    /*
-        Show comparison image only
-        on the LEFT side of divider.
-    */
-
     sliderContainer.style.clipPath =
         "inset(0 " +
         (100 - sliderPosition) +
         "% 0 0)";
 
 
-    /*
-        Move divider.
-    */
-
     sliderDivider.style.left =
         sliderPosition + "%";
 
 }
 
-
-/* ---------------------------------------------------------
-   SET SLIDER POSITION
-   --------------------------------------------------------- */
 
 function setSliderFromPointer(event) {
 
@@ -1922,18 +1693,14 @@ function setSliderFromPointer(event) {
             )
             /
             rect.width
-        )
-        * 100;
+        ) *
+        100;
 
 
     updateSliderPosition();
 
 }
 
-
-/* ---------------------------------------------------------
-   DRAG SLIDER
-   --------------------------------------------------------- */
 
 sliderDivider.addEventListener(
     "pointerdown",
@@ -1943,14 +1710,11 @@ sliderDivider.addEventListener(
 
         event.stopPropagation();
 
-
         isPanning = false;
-
 
         sliderDivider.setPointerCapture(
             event.pointerId
         );
-
 
         setSliderFromPointer(event);
 
@@ -2006,34 +1770,16 @@ function setRating(score) {
         letters[currentMethod];
 
 
-    /*
-        Save rating for current method.
-    */
-
     ratings[letter] =
         score;
 
 
-    /*
-        Update visible buttons.
-    */
-
     updateRatingButtons();
-
-
-    /*
-        Enable Next only when
-        ALL FOUR images are rated.
-    */
 
     updateNextButton();
 
 }
 
-
-/* ---------------------------------------------------------
-   UPDATE RATING BUTTONS
-   --------------------------------------------------------- */
 
 function updateRatingButtons() {
 
@@ -2063,7 +1809,9 @@ function updateRatingButtons() {
         });
 
 
-    if (currentScore === null) {
+    if (
+        currentScore === null
+    ) {
 
         ratingStatus.textContent =
             "Please rate Image " +
@@ -2085,10 +1833,6 @@ function updateRatingButtons() {
 
 }
 
-
-/* ---------------------------------------------------------
-   CHECK IF ALL RATINGS EXIST
-   --------------------------------------------------------- */
 
 function updateNextButton() {
 
@@ -2114,10 +1858,6 @@ function updateNextButton() {
 
 function submitRating() {
 
-    /*
-        Safety check.
-    */
-
     const complete =
         letters.every(
             function(letter) {
@@ -2139,8 +1879,7 @@ function submitRating() {
     }
 
 
-    nextBtn.disabled =
-        true;
+    nextBtn.disabled = true;
 
 
     fetch(
@@ -2167,7 +1906,6 @@ function submitRating() {
         }
     )
 
-
     .then(
         function(response) {
 
@@ -2175,7 +1913,6 @@ function submitRating() {
 
         }
     )
-
 
     .then(
         function(data) {
@@ -2203,7 +1940,6 @@ function submitRating() {
         }
     )
 
-
     .catch(
         function(error) {
 
@@ -2225,10 +1961,6 @@ function submitRating() {
    INITIALIZATION
    ========================================================= */
 
-/*
-    Comparison is OFF initially.
-*/
-
 sliderContainer.style.display =
     "none";
 
@@ -2236,21 +1968,7 @@ sliderDivider.style.display =
     "none";
 
 
-/*
-    Start with Image A.
-*/
-
-
-/*
-    INITIALIZE VIEW STATE
-    ---------------------
-    Start Image A with a clean
-    100% zoom and zero pan.
-*/
-
 currentMethod = 0;
-
-
 
 applyTransform();
 
