@@ -145,13 +145,15 @@ href="{{ url_for('static', filename='css/style.css') }}">
     box-shadow:
         0 2px 10px rgba(0,0,0,0.15);
 
-    cursor: default;
+    cursor: grab;
 
     user-select: none;
 
     touch-action: none;
 }
-
+.comparison-viewport:active {
+    cursor: grabbing;
+}
 
 /* ================================
    IMAGE LAYERS
@@ -547,7 +549,8 @@ alt="Low Resolution Reference">
         <button
             type="button"
             class="tool-btn"
-            onclick="zoomOut()">
+            onclick="zoomOut()"
+            aria-label="Zoom out">
             −
         </button>
 
@@ -558,10 +561,11 @@ alt="Low Resolution Reference">
             Reset
         </button>
 
-        <button
+       <button
             type="button"
             class="tool-btn"
-            onclick="zoomIn()">
+            onclick="zoomIn()"
+            aria-label="Zoom in">
             +
         </button>
 
@@ -950,19 +954,19 @@ function updateComparisonLabel() {
 
 
 /* =========================================================
-   ZOOM
+   ZOOM + PAN
    ========================================================= */
 
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 10;
+const ZOOM_STEP = 0.25;
+
+
+/* ---------------------------------------------------------
+   APPLY SAME TRANSFORM TO BOTH IMAGES
+   --------------------------------------------------------- */
+
 function applyTransform() {
-
-    /*
-        IMPORTANT:
-
-        The EXACT same transform is applied
-        to BOTH images.
-
-        Therefore zoom and pan stay synchronized.
-    */
 
     const transform =
         "translate(" +
@@ -975,49 +979,82 @@ function applyTransform() {
         ")";
 
 
-    mainLayer.style.transform =
-        transform;
+    /*
+        VERY IMPORTANT:
+        Both images receive exactly the same
+        transform so they remain registered.
+    */
 
+    mainLayer.style.transform = transform;
 
-    comparisonLayer.style.transform =
-        transform;
+    comparisonLayer.style.transform = transform;
 
 
     zoomInfo.textContent =
         "Zoom: " +
         Math.round(zoom * 100) +
         "%";
-
 }
 
 
 /* ---------------------------------------------------------
-   ZOOM IN
+   LIMIT PAN
    --------------------------------------------------------- */
 
-function zoomIn() {
+function clampPan() {
 
-    zoom =
-        Math.min(
-            10,
-            zoom + 0.25
+    if (zoom <= 1) {
+
+        panX = 0;
+        panY = 0;
+
+        return;
+    }
+
+
+    const rect =
+        viewport.getBoundingClientRect();
+
+
+    /*
+        Maximum translation allowed.
+
+        This prevents the image from being
+        dragged completely outside the viewport.
+    */
+
+    const maxX =
+        (rect.width * (zoom - 1)) / 2;
+
+    const maxY =
+        (rect.height * (zoom - 1)) / 2;
+
+
+    panX =
+        Math.max(
+            -maxX,
+            Math.min(maxX, panX)
         );
 
-    applyTransform();
 
+    panY =
+        Math.max(
+            -maxY,
+            Math.min(maxY, panY)
+        );
 }
 
 
 /* ---------------------------------------------------------
-   ZOOM OUT
+   SET ZOOM
    --------------------------------------------------------- */
 
-function zoomOut() {
+function setZoom(newZoom) {
 
     zoom =
         Math.max(
-            1,
-            zoom - 0.25
+            MIN_ZOOM,
+            Math.min(MAX_ZOOM, newZoom)
         );
 
 
@@ -1029,8 +1066,33 @@ function zoomOut() {
     }
 
 
-    applyTransform();
+    clampPan();
 
+    applyTransform();
+}
+
+
+/* ---------------------------------------------------------
+   ZOOM IN
+   --------------------------------------------------------- */
+
+function zoomIn() {
+
+    setZoom(
+        zoom + ZOOM_STEP
+    );
+}
+
+
+/* ---------------------------------------------------------
+   ZOOM OUT
+   --------------------------------------------------------- */
+
+function zoomOut() {
+
+    setZoom(
+        zoom - ZOOM_STEP
+    );
 }
 
 
@@ -1047,19 +1109,20 @@ function resetView() {
 
     sliderPosition = 50;
 
+
     applyTransform();
+
 
     if (sliderEnabled) {
 
         updateSliderPosition();
 
     }
-
 }
 
 
 /* =========================================================
-   MOUSE WHEEL ZOOM
+   CURSOR-CENTERED MOUSE WHEEL ZOOM
    ========================================================= */
 
 viewport.addEventListener(
@@ -1068,24 +1131,100 @@ viewport.addEventListener(
 
         event.preventDefault();
 
+
+        const rect =
+            viewport.getBoundingClientRect();
+
+
+        /*
+            Mouse position relative to viewport center.
+        */
+
+        const mouseX =
+            event.clientX -
+            (rect.left + rect.width / 2);
+
+
+        const mouseY =
+            event.clientY -
+            (rect.top + rect.height / 2);
+
+
+        const oldZoom =
+            zoom;
+
+
+        let newZoom;
+
+
         if (event.deltaY < 0) {
 
-            zoomIn();
+            newZoom =
+                Math.min(
+                    MAX_ZOOM,
+                    oldZoom + ZOOM_STEP
+                );
 
         }
 
         else {
 
-            zoomOut();
+            newZoom =
+                Math.max(
+                    MIN_ZOOM,
+                    oldZoom - ZOOM_STEP
+                );
 
         }
+
+
+        if (newZoom === oldZoom) {
+
+            return;
+
+        }
+
+
+        /*
+            Adjust pan so the point underneath
+            the mouse remains approximately fixed.
+        */
+
+        const zoomRatio =
+            newZoom / oldZoom;
+
+
+        panX =
+            mouseX -
+            (mouseX - panX) * zoomRatio;
+
+
+        panY =
+            mouseY -
+            (mouseY - panY) * zoomRatio;
+
+
+        zoom =
+            newZoom;
+
+
+        if (zoom === 1) {
+
+            panX = 0;
+            panY = 0;
+
+        }
+
+
+        clampPan();
+
+        applyTransform();
 
     },
     {
         passive: false
     }
 );
-
 
 /* =========================================================
    SYNCHRONIZED PAN
@@ -1153,12 +1292,20 @@ viewport.addEventListener(
 
 
         panX += event.movementX;
-
         panY += event.movementY;
 
 
         /*
-            Same transform applied to both images.
+            Prevent the image from being
+            dragged completely outside.
+        */
+
+        clampPan();
+
+
+        /*
+            Apply EXACTLY the same transform
+            to both images.
         */
 
         applyTransform();

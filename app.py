@@ -125,40 +125,133 @@ def evaluate():
 def save_rating():
 
     if "participant_id" not in session:
-        return jsonify({"status": "error"}), 401
+        return jsonify({
+            "status": "error",
+            "message": "Participant session missing"
+        }), 401
 
-    data = request.get_json()
+    try:
 
-    participant = session["participant_id"]
-    image_id = data["image"]
+        data = request.get_json()
 
-    # Already rated?
-    existing = Rating.query.filter_by(
-        participant_id=participant,
-        image_id=image_id
-    ).first()
+        if not data:
+            return jsonify({
+                "status": "error",
+                "message": "No JSON data received"
+            }), 400
 
-    if existing:
-        return jsonify({"status": "already_saved"})
+        participant_id = session["participant_id"]
 
-    mapping = session["current_mapping"]
-    ratings = data["ratings"]
+        image_id = int(data["image"])
 
-    for letter in ["A", "B", "C" , "D"]:
+        ratings = data["ratings"]
 
-        rating = Rating(
-            participant_id=participant,
-            image_id=image_id,
-            shown_as=letter,
-            method=mapping[letter],
-            score=ratings[letter]
+        required_letters = ["A", "B", "C", "D"]
+
+        for letter in required_letters:
+
+            if letter not in ratings:
+                return jsonify({
+                    "status": "error",
+                    "message": f"Missing rating for {letter}"
+                }), 400
+
+            score = int(ratings[letter])
+
+            if score < 1 or score > 5:
+                return jsonify({
+                    "status": "error",
+                    "message": f"Invalid score for {letter}"
+                }), 400
+
+
+        # ==========================================
+        # PREVENT DUPLICATE SUBMISSION
+        # ==========================================
+
+        existing = Rating.query.filter_by(
+            participant_id=participant_id,
+            image_id=image_id
+        ).first()
+
+        if existing:
+
+            return jsonify({
+                "status": "already_saved"
+            })
+
+
+        # ==========================================
+        # CURRENT RANDOM A/B/C/D MAPPING
+        # ==========================================
+
+        mapping = session.get("current_mapping")
+
+        if not mapping:
+
+            return jsonify({
+                "status": "error",
+                "message": "Image mapping missing from session"
+            }), 400
+
+
+        # ==========================================
+        # SAVE FOUR RATINGS
+        # ==========================================
+
+        for letter in required_letters:
+
+            rating = Rating(
+                participant_id=participant_id,
+                image_id=image_id,
+                shown_as=letter,
+                method=mapping[letter],
+                score=int(ratings[letter])
+            )
+
+            db.session.add(rating)
+
+
+        db.session.commit()
+
+
+        # ==========================================
+        # VERIFY DATABASE WRITE
+        # ==========================================
+
+        saved_count = Rating.query.filter_by(
+            participant_id=participant_id,
+            image_id=image_id
+        ).count()
+
+
+        if saved_count != 4:
+
+            db.session.rollback()
+
+            return jsonify({
+                "status": "error",
+                "message": "Ratings were not saved correctly"
+            }), 500
+
+
+        return jsonify({
+            "status": "success"
+        })
+
+
+    except Exception as error:
+
+        db.session.rollback()
+
+        app.logger.exception(
+            "Error while saving ratings"
         )
 
-        db.session.add(rating)
-
-    db.session.commit()
-
-    return jsonify({"status": "success"})
+        return jsonify({
+            "status": "error",
+            "message": "Database error while saving ratings"
+        }), 500
 
 @app.route("/next_image")
 def next_image():
@@ -183,10 +276,19 @@ def finish():
 @app.route("/export")
 def export():
 
-    rows = Rating.query.order_by(
-        Rating.image_id,
-        Rating.participant_id
-    ).all()
+    rows = (
+        db.session.query(Rating, Participant)
+        .join(
+            Participant,
+            Participant.id == Rating.participant_id
+        )
+        .order_by(
+            Rating.image_id,
+            Rating.participant_id,
+            Rating.shown_as
+        )
+        .all()
+    )
 
     def generate():
 
@@ -208,22 +310,18 @@ def export():
             "Timestamp"
         ])
 
-        for r in rows:
-
-            participant = Participant.query.get(
-                r.participant_id
-            )
+        for rating, participant in rows:
 
             yield data.writerow([
-                r.participant_id,
-                participant.name if participant else "",
-                participant.age if participant else "",
-                participant.profession if participant else "",
-                r.image_id,
-                r.method,
-                r.shown_as,
-                r.score,
-                r.timestamp
+                participant.id,
+                participant.name or "",
+                participant.age if participant.age is not None else "",
+                participant.profession or "",
+                rating.image_id,
+                rating.method,
+                rating.shown_as,
+                rating.score,
+                rating.timestamp
             ])
 
 
@@ -254,9 +352,9 @@ def export():
         for method in methods:
 
             method_scores = [
-                r.score
-                for r in rows
-                if r.method == method
+                rating.score
+                for rating, participant in rows
+                if rating.method == method
             ]
 
             if method_scores:
@@ -290,18 +388,18 @@ def export():
         }
     )
 
-@app.route("/reset_database")
-def reset_database():
+# @app.route("/reset_database")
+# def reset_database():
 
-    # DELETE ALL RATINGS
-    Rating.query.delete()
+#     # DELETE ALL RATINGS
+#     Rating.query.delete()
 
-    # DELETE ALL PARTICIPANTS
-    Participant.query.delete()
+#     # DELETE ALL PARTICIPANTS
+#     Participant.query.delete()
 
-    db.session.commit()
+#     db.session.commit()
 
-    return "DATABASE RESET SUCCESSFULLY"
+#     return "DATABASE RESET SUCCESSFULLY"
 
 class Echo:
     def write(self, value):
