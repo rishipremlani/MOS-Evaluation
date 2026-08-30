@@ -764,6 +764,12 @@ const methodPaths = [
 
 let comparisonMethod = 1;
 
+let zoom = 1;
+
+let panX = 0;
+
+let panY = 0;
+
 // =========================================================
 // PER-METHOD VIEW STATE
 // =========================================================
@@ -1848,16 +1854,25 @@ sliderDivider.style.display =
     Start with Image A.
 */
 
-selectMethod(0);
-
 
 /*
-    Initial state.
+    INITIALIZE VIEW STATE
+    ---------------------
+    Start Image A with a clean
+    100% zoom and zero pan.
 */
 
-updateNextButton();
+currentMethod = 0;
+
+
 
 applyTransform();
+
+updateComparisonLabel();
+
+updateRatingButtons();
+
+updateNextButton();
 
 </script>
 
