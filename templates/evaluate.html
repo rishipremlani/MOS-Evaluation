@@ -760,20 +760,49 @@ const methodPaths = [
    STATE
    --------------------------------------------------------- */
 
-let currentMethod = 0;
+
 
 let comparisonMethod = 1;
 
-let zoom = 1;
+// =========================================================
+// PER-METHOD VIEW STATE
+// =========================================================
 
-let panX = 0;
-let panY = 0;
+const viewStates = {
 
+    A: {
+        zoom: 1,
+        panX: 0,
+        panY: 0
+    },
+
+    B: {
+        zoom: 1,
+        panX: 0,
+        panY: 0
+    },
+
+    C: {
+        zoom: 1,
+        panX: 0,
+        panY: 0
+    },
+
+    D: {
+        zoom: 1,
+        panX: 0,
+        panY: 0
+    }
+
+};
+
+let currentMethod = 0;
 let sliderEnabled = false;
 
 let sliderPosition = 50;
 
 let isPanning = false;
+
 
 
 /*
@@ -840,13 +869,49 @@ const ratingStatus =
 const nextBtn =
     document.getElementById("nextBtn");
 
-
 /* =========================================================
    METHOD SELECTION
    ========================================================= */
+// =========================================================
+// SAVE CURRENT VIEW STATE
+// =========================================================
+
+function saveCurrentViewState() {
+
+    const letter = letters[currentMethod];
+
+    viewStates[letter] = {
+
+        zoom: zoom,
+        panX: panX,
+        panY: panY
+
+    };
+
+}
+
+
+// =========================================================
+// RESTORE VIEW STATE
+// =========================================================
+
+function restoreViewState() {
+
+    const letter = letters[currentMethod];
+
+    const state = viewStates[letter];
+
+    zoom = state.zoom;
+    panX = state.panX;
+    panY = state.panY;
+
+    applyTransform();
+
+}
 
 function selectMethod(index) {
 
+    saveCurrentViewState();
     currentMethod = index;
 
     /*
@@ -916,12 +981,9 @@ function selectMethod(index) {
     updateRatingButtons();
 
 
-    /*
-        Start each selected method from
-        the same clean view.
-    */
-
-    resetView();
+   // Restore the zoom/pan state previously used
+    // for this method.
+    restoreViewState();
 
 }
 
@@ -1109,15 +1171,17 @@ function resetView() {
 
     sliderPosition = 50;
 
+    // Save reset state for current method
+    saveCurrentViewState();
 
     applyTransform();
-
 
     if (sliderEnabled) {
 
         updateSliderPosition();
 
     }
+
 }
 
 
